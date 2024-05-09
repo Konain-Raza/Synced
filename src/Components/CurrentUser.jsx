@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./currentUser.css";
 import "remixicon/fonts/remixicon.css";
+import { ToastContainer, toast } from "react-toastify";
+
 import {
   addDoc,
   collection,
@@ -9,6 +11,7 @@ import {
   query,
   doc,
   setDoc,
+  where,
 } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 
@@ -16,28 +19,18 @@ function CurrentUser(props) {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [presentUserName, setPresentUserName] = useState("");
+  const [publicRooms, setPublicRooms] = useState([]); // Added state for public rooms
   const messageRef = collection(db, "chats");
   const roomRef = collection(db, "rooms");
 
-
   useEffect(() => {
-    // Fetch all public rooms
-    const q = query(roomRef, where("type", "==", "public"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const fetchedPublicRooms = [];
-      querySnapshot.forEach((doc) => {
-        fetchedPublicRooms.push({ id: doc.id, ...doc.data() });
-      });
-      setPublicRooms(fetchedPublicRooms);
-    });
-  
-    return unsubscribe; // Return the unsubscribe function
-  }, []);
-  useEffect(() => {
-    setPresentUserName(props.authUser.displayName);
+console.log(props.authUser)
 
-    const q = query(messageRef, orderBy("timestamp"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+
+    const messageQuery = query(messageRef, orderBy("timestamp"));
+    const roomQuery = query(roomRef);
+
+    const messageUnsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
       const fetchedMessages = [];
       querySnapshot.forEach((doc) => {
         fetchedMessages.push({ id: doc.id, ...doc.data() });
@@ -45,24 +38,24 @@ function CurrentUser(props) {
       setMessages(fetchedMessages);
     });
 
-    return () => unsubscribe();
+    const roomUnsubscribe = onSnapshot(roomQuery, (querySnapshot) => {
+      const fetchedRooms = [];
+      querySnapshot.forEach((doc) => {
+        fetchedRooms.push({ id: doc.id, ...doc.data() });
+      });
+      const publicRooms = fetchedRooms.filter((room) => room.type === "public");
+      setPublicRooms(publicRooms); // Set public rooms
+    });
+
+    return () => {
+      messageUnsubscribe();
+      roomUnsubscribe();
+    };
   }, []);
-
-  const renderPublicRooms = () => {
-    return publicRooms.map((room) => (
-      <div key={room.id} className="room">
-        <p>{room.name}</p>
-        <button onClick={() => joinRoom(room.id)}>Join</button>
-      </div>
-    ));
-  };
-
-  
-  
 
   const handleSendMsg = async () => {
     if (!props.authUser) {
-      console.error("Current user is not defined. Please log in first.");
+      tost.error("Current user is not defined. Please log in first.");
       return;
     }
 
@@ -78,57 +71,55 @@ function CurrentUser(props) {
         timestamp: new Date().getTime(),
       });
       console.log("Message sent:", newMessage);
-      setNewMessage(""); // Clear input field after sending message
+      setNewMessage("");
     } catch (error) {
       console.error("Error sending message: ", error);
     }
   };
-  const createRoom = async (isPrivate) => {
-    try {
-      if (!props.authUser) {
-        console.error("Current user is not defined. Please log in first.");
-        return;
-      }
-  
-      const roomType = isPrivate ? "private" : "public";
-      const roomData = {
-        owner: props.authUser.uid,
-        type: roomType,
-      };
-  
-      const roomDocRef = await addDoc(roomRef, roomData);
-      console.log("Created room:", roomDocRef.id);
-  
-      // Add the current user as a member of the room
-      const memberRef = collection(db, `rooms/${roomDocRef.id}/members`);
-      await addDoc(memberRef, {
-        userId: props.authUser.uid,
-      });
-      console.log("Joined room:", roomDocRef.id);
-    } catch (error) {
-      console.error("Error creating room: ", error);
-    }
-  };
-  
-  
 
   const joinRoom = async (roomId) => {
     try {
-      if (!props.authUser) {
-        console.error("Current user is not defined. Please log in first.");
-        return;
-      }
 
-      const roomDocRef = doc(db, "rooms", roomId);
-      const memberRef = collection(roomDocRef, "members");
-      await addDoc(memberRef, {
-        userId: props.authUser.uid,
+      const roomMemberRef = collection(db, "rooms", roomId, "members");
+      await addDoc(roomMemberRef, {
+        userId: props.authUser.currentUser.uid // Use props.authUser.uid instead of currentUser.uid
       });
       console.log("Joined room:", roomId);
     } catch (error) {
       console.error("Error joining room: ", error);
     }
   };
+
+  const createRoom = async (isPrivate) => {
+    try {
+      if (!props.authUser) {
+        console.error("Current user is not defined. Please log in first.");
+        return;
+      }
+      const userId = props.authUser.currentUser.uid;
+      if (!userId) {
+        console.error("User ID is missing in props.authUser.");
+        return;
+      }
+
+      const roomType = isPrivate ? "private" : "public";
+      const roomData = {
+        owner: userId,
+        type: roomType,
+      };
+      const roomDocRef = await addDoc(roomRef, roomData);
+      console.log("Created room:", roomDocRef.id);
+
+      const memberRef = collection(db, `rooms/${roomDocRef.id}/members`);
+      await addDoc(memberRef, {
+        userId: userId,
+      });
+      console.log("Joined room:", roomDocRef.id);
+    } catch (error) {
+      console.error("Error creating room: ", error);
+    }
+  };
+
 
   return (
     <div id="currentUserPage">
@@ -152,14 +143,20 @@ function CurrentUser(props) {
           <button onClick={() => createRoom(false)}>Create Public Room</button>
           <button onClick={() => createRoom(true)}>Create Private Room</button>
         </div>
-          <div id="joined-rooms">
-            <h2>Joined Rooms</h2>
-            {/* Display joined rooms here */}
-          </div>
-          <div id="all-rooms">
-            <h2>All Rooms</h2>
-            {/* Display all rooms here */}
-          </div>
+        <div id="joined-rooms">
+          <h2>Joined Rooms</h2>
+          {/* Display joined rooms here */}
+        </div>
+        <div id="all-rooms">
+          <h2>All Rooms</h2>
+          {publicRooms.map((room) => (
+            <div key={room.id} className="room">
+              <p>{room.id}</p>{" "}
+            
+              <button onClick={() => joinRoom(room.id)}>Join</button>
+            </div>
+          ))}
+        </div>
       </div>
       <div id="chat">
         <h1>Chats</h1>
@@ -191,6 +188,19 @@ function CurrentUser(props) {
           </button>
         </div>
       </div>
+      <ToastContainer
+              position="top-center"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+              transition:Bounce
+            />
     </div>
   );
 }

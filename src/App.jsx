@@ -1,11 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import heroimg from "./assets/hero-image.png";
 import Cookies from "universal-cookie";
-// import CurrentUser from "./CurrentUser";
-import 'remixicon/fonts/remixicon.css'
-
-import { ToastContainer, toast } from "react-toastify"; // Import Bounce
+import 'remixicon/fonts/remixicon.css';
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import googleIcon from "./assets/icons8-google.svg";
 import {
@@ -25,7 +23,7 @@ function App() {
   const [email, setEmail] = useState("");
   const [currentForm, setCurrentForm] = useState("login");
   const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
-  const [user, setuser] = useState("");
+  
   const switchToSignup = () => {
     setCurrentForm("signup");
   };
@@ -37,43 +35,23 @@ function App() {
   const handleGoogleSignin = async () => {
     try {
       const response = await signInWithPopup(auth, provider);
-      // setuser(auth.currentUser);
-
-      if (user) {
-        await setDoc(doc(db, "Users", user.uid), {
-          email: email,
-          password: password,
-          fullname: username,
-        });
-      }
-      cookies.set("auth-token", response.user.refreshToken);
+      cookies.set("auth-token", response.user.auth.currentUser.stsTokenManager.refreshToken);
       toast.success("Successfully Logged In");
       setIsAuth(true);
-
-      // window.location.href = "./Profile";
     } catch (error) {
       toast.error(`${error}`);
     }
   };
 
   const handleLoginSubmit = async () => {
-    // preventDefault();
-    if (email.length == 0 || password.length == 0) {
+    if (email.length === 0 || password.length === 0) {
       toast.warning("Please fill all the fields");
     } else {
       try {
-        const response = await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-        console.log(response);
-        cookies.set("auth-token", response.user.refreshToken);
-
+        const response = await signInWithEmailAndPassword(auth, email, password);
+        cookies.set("auth-token", response.user.auth.currentUser.stsTokenManager.refreshToken);
         toast.success("Successfully Logged In");
         setIsAuth(true);
-
-        // window.location.href = `./${email}`
       } catch (error) {
         toast.error(`${error}`);
       }
@@ -85,25 +63,12 @@ function App() {
   };
 
   const handleSignupSubmit = async () => {
-    if (email.length == 0 || password.length == 0) {
+    if (email.length === 0 || password.length === 0) {
       toast.warning("Please fill all the fields");
     } else {
       try {
-        // e.preventDefault();
         await createUserWithEmailAndPassword(auth, email, password);
-        setuser(auth.currentUser);
-
-        if (user) {
-          // Assuming 'db' is your Firestore database instance
-          await setDoc(doc(db, "Users", user.uid), {
-            email: email,
-            password: password,
-            fullname: username,
-          });
-          toast.success(`Congratulations, Your'e Successfully Registered`);
-        }
-
-        // Reset form fields
+        toast.success(`Congratulations, Your'e Successfully Registered`);
       } catch (error) {
         toast.error("Error during sign-up:", error.msg);
       }
@@ -111,19 +76,13 @@ function App() {
   };
 
   if (isAuth) {
-    console.log(auth)
-
-    return <CurrentUserPage authUser={auth} />
-  
-  }
-
-  else{
+    return <CurrentUserPage authUser={auth} />;
+  } else {
     return (
       <div id="main">
         <div id="hero">
           <div id="hero-content">
-          <div id="blur-circle"></div>
-
+            <div id="blur-circle"></div>
             <h1>Synced</h1>
             <h5>Your Hub for Group Messaging 💬</h5>
             <p>
@@ -132,7 +91,6 @@ function App() {
               with your teams, friends, and communities. 🚀
             </p>
             <img src={heroimg} alt="hero image" id="hero-image" />
-
           </div>
           <div id="hero-form">
             {currentForm === "login" && (
@@ -159,7 +117,6 @@ function App() {
                 </button>
                 <p>OR</p>
                 <button id="login-btn" onClick={handleGoogleSignin}>
-                  {" "}
                   <img src={googleIcon} alt="googleicon" />
                   Log in with Google
                 </button>
@@ -203,7 +160,6 @@ function App() {
                 </button>
                 <p>OR</p>
                 <button id="login-btn" onClick={handleGoogleSignin}>
-                  {" "}
                   <img src={googleIcon} alt="googleicon" /> Sign up with Google
                 </button>
                 <h4>
@@ -232,8 +188,6 @@ function App() {
       </div>
     );
   }
-
-  
 }
 
 export default App;
