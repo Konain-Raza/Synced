@@ -1,0 +1,165 @@
+#currentUserPage{
+    width: 100%;
+    height: 100%;
+    color: black;
+    /* z-index: 100; */
+    /* background-color: yellow; */
+    display: flex;
+  
+  }
+
+  #nav-bar{
+    padding-top: 1%;
+    width: 7%;
+    height: 97.5%;
+    background-color: #EDEFF3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4vh;
+  }
+
+  #rooms{
+    height: 100%;
+    width: 30%;
+    background-color: #F0F4FA;
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  #chat{
+    height: 100%;
+    width: 65%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    background-color: #F8FAFF;
+
+  }
+  #whole-chat{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    /* background-color: purple; */
+    height: 80%;
+    overflow: hidden;
+    overflow-y: scroll;
+  }
+  #new-message-box{
+    padding: 0px 40px;
+    height: 10%;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: grey;
+    
+  }
+
+#msginput{
+  background-color: white;
+  width: 700px;
+  border-radius: 10px;
+  padding: 10px;
+  border: none;
+}
+  #sendmsg-btn{
+    cursor: pointer;
+ border: none;
+width: 8%;
+display: flex;
+justify-content: center;
+    padding: 18px;
+    border-radius: 50%;
+  }
+
+  #profile-bg{
+    width: 80%;
+    height: 11.5%;
+    border-radius: 15px;
+    object-fit: cover;
+    background-color: #AFBBF7;
+  }
+
+  .icon-bg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 65%;
+    height: 9%;
+    border-radius: 15px;
+    object-fit: cover;
+    background-color: blue;
+    color: black;
+  }
+
+  .icon-bg>i{
+    font-size: 2.5rem;
+  }
+
+  .message{
+    width: max-content;
+    /* min-width: 90%; */
+    border-radius: 15px;
+    height: max-content;
+    /* max-height: max-content; */
+    padding: 10px;
+    gap: 1vh;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    margin: 10px;
+    /* background: white; */
+  } 
+  .message>p{
+    margin: 0;
+  }
+#username{
+  font-size: 10px;
+}
+#msg-wrap{
+  padding: 6px;
+  border-radius: 10px;
+  background-color: lightcoral;
+}
+  #time{
+    font-size: 10px;
+  }
+
+  #rooms-header{
+    background-color: pink;
+    display: flex;
+    justify-content: space-between;
+    height: 13%;
+    align-items: center;
+  }
+
+#joined-rooms{
+  width: 100%;
+  overflow-y: scroll;
+
+  height: 40%;
+  background-color: #AFBBF7;
+}
+
+#all-rooms{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 48%;
+  background-color: #0d2ed3;
+  overflow-y: scroll;
+}
+
+.rooms{
+  width: 95%;
+  border-radius: 15px;
+  background-color: #F8FAFF;
+  display: flex;
+  justify-content: space-around;
+}

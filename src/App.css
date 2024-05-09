@@ -1,0 +1,201 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  
+  height: 100vh;
+}
+@font-face {
+  font-family: gilroy;
+  src: url(./assets/Gilroy-Regular.ttf);
+}
+
+#root {
+width: 100%;
+height: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: gilroy;
+ 
+}
+#main{
+
+background-color: #F6F6F6;
+display: flex;
+justify-content: center;
+align-items: center;
+  width: 100%;
+  height:100%;
+}
+
+.container{
+  border-radius: 25px;
+  padding: 10px 30px;
+  /* background-color: white; */
+  color: black;
+  width: max-content;
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  gap: 3vh;
+  text-align: center;
+}
+ .inputs{
+  background-color: #EAF0F7;
+  color: black;
+  /* border: 1px solid rgba(0, 0, 0, 0.719); */
+  border-radius:10px;
+  border: none;
+  width:  clamp(9.375rem, 7.5rem + 15vw, 18.75rem);
+  padding: 20px;
+  color: grey;
+  font-weight: bold;
+ }
+
+ #login-btn{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 10px;
+  border: none;
+  width: 100%;
+  height: max-content;
+  padding: 15px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: white;
+  background-color: #4461F2;
+ }
+ #container>h1{
+  font-size: clamp(1.25rem, 1.125rem + 1vw, 1.875rem);
+}
+
+#login-btn>img{
+  width:8%;
+}
+
+#hero{
+  position: relative;
+gap: 5vw;
+  width: 100%;
+  display: flex;
+  align-items: center;
+/* background-color: bisque; */
+  height: 90%;
+  padding: 40px;
+  /* align-items: center; */
+  justify-content: space-between;
+}
+#change-form{
+  text-decoration: none;
+  color: blue;
+
+}
+#blur-circle{
+  opacity: 0.5;
+  bottom: 0;
+  z-index: 0;
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  left: 15%;
+  filter: blur(60px);
+  /* height: 60%; */
+  padding: 30px;
+  border-radius: 50%;
+  background-color: #4461F2;
+}
+#hero-content{
+  z-index: 40;
+  /* background-color: aqua; */
+  display: flex;  
+  flex-direction: column;
+  /* align-items: center; */
+  text-align: left;
+  /* justify-content: center; */
+  padding-top: 23%;
+  padding-left: 2%;
+  height: 100%;
+  /* padding: 10px; */
+  width: 40%;
+}
+
+#hero-image{
+  /* background-color: red; */
+  position: absolute;
+  /* top: 0; */
+  rotate: -10deg;
+  left: 32%;
+  
+  bottom: 3%;
+  width: 25rem;
+  /* animation-name: girnelaga; */
+  animation-duration: 1s;
+  animation-timing-function:ease-out;
+  /* animation-iteration-count: infinite; */
+  
+}
+@keyframes girnelaga{
+    0%{
+      top: 0%;
+    }
+    50%{
+      top: 50%;
+    }
+    90%{
+      bottom: 0%;
+    }
+    100%{
+
+    bottom: 10%;
+    }
+}
+#hero-content>h1{
+  margin: 0;
+  /* padding: 0%; */
+  font-size: clamp(2.75rem, 2.25rem + 3vw, 5.25rem);
+  /* background-color: aqua; */
+}
+#hero-content>h5{
+  margin: 0;
+  font-weight: 1000;
+padding-bottom: 15px;
+  font-size: clamp(1.25rem, 0.7rem + 1vw, 1.4rem);
+  /* background-color: aqua; */
+}
+
+#hero-content>p{
+  /* width: 10%; */
+  margin: 0;
+  
+  font-weight: 50;
+
+  font-size: clamp(0.625rem, 0.5rem + 1vw, 1.25rem);
+  /* background-color: aqua; */
+}
+
+#hero-form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: green; */
+  width: 40%;
+  height: 95%;
+  
+}
+
+#signup{
+  height: 100%;
+  gap: 0.8vw;
+}
+
+#currentUserPage{
+  width: 100%;
+  height: 100%;
+  color: black;
+  background-color: yellow;
+
+}
