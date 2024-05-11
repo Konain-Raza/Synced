@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import heroimg from "./assets/hero-image.png";
 import Cookies from "universal-cookie";
-import 'remixicon/fonts/remixicon.css';
+import "remixicon/fonts/remixicon.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import googleIcon from "./assets/icons8-google.svg";
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { auth, db, provider } from "./firebase-config.js";
+import { auth, db, provider} from "./firebase-config";
 import { doc, setDoc } from "firebase/firestore";
-import CurrentUserPage from "./Components/CurrentUser.jsx";
+import CurrentUserPage from "./Components/CurrentUser/CurrentUser";
+import { GoogleAuthProvider } from "firebase/auth/cordova";
 
 function App() {
   const cookies = new Cookies();
@@ -23,7 +25,12 @@ function App() {
   const [email, setEmail] = useState("");
   const [currentForm, setCurrentForm] = useState("login");
   const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
-  
+  const [userdata, setuserdata] = useState("")
+
+  // Modify this line to destructure the object returned from useUserStore
+
+
+
   const switchToSignup = () => {
     setCurrentForm("signup");
   };
@@ -32,10 +39,14 @@ function App() {
     setCurrentForm("login");
   };
 
-  const handleGoogleSignin = async () => {
+  const handleGoogleSignin = async (e) => {
+    e.preventDefault();
     try {
+      // const auth = getAuth();
+      // const provider = new GoogleAuthProvider();
       const response = await signInWithPopup(auth, provider);
-      cookies.set("auth-token", response.user.auth.currentUser.stsTokenManager.refreshToken);
+      cookies.set("auth-token", response._tokenResponse.refreshToken);
+
       toast.success("Successfully Logged In");
       setIsAuth(true);
     } catch (error) {
@@ -43,40 +54,67 @@ function App() {
     }
   };
 
-  const handleLoginSubmit = async () => {
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const { email, password } = Object.fromEntries(formData);
+
     if (email.length === 0 || password.length === 0) {
       toast.warning("Please fill all the fields");
     } else {
       try {
-        const response = await signInWithEmailAndPassword(auth, email, password);
-        cookies.set("auth-token", response.user.auth.currentUser.stsTokenManager.refreshToken);
+        const response = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        // setuserdata(response);
+      
+        cookies.set("auth-token", response._tokenResponse.refreshToken);
         toast.success("Successfully Logged In");
+        // console.log(response.user.uid)
+        setuserdata(response.user.uid);
+        console.log(userdata)
+
         setIsAuth(true);
       } catch (error) {
         toast.error(`${error}`);
       }
-
-      setUsername("");
-      setEmail("");
-      setPassword("");
     }
   };
 
-  const handleSignupSubmit = async () => {
-    if (email.length === 0 || password.length === 0) {
+  const handleSignupSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const { username, email, password } = Object.fromEntries(formData);
+
+    if (email.length === 0 || password.length === 0 || username.length === 0) {
       toast.warning("Please fill all the fields");
     } else {
       try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        toast.success(`Congratulations, Your'e Successfully Registered`);
+        const response = await createUserWithEmailAndPassword(auth, email, password);
+        setuserdata(response.user.uid);
+
+
+        await setDoc(doc(db, "users", response.user.uid), {
+          username,
+          email,
+          id: response.user.uid,
+          blocked: [],
+        });
+        await setDoc(doc(db, "userchats", response.user.uid), {
+          chats:[]
+             });
+        toast.success(`Congratulations, You're Successfully Registered`);
       } catch (error) {
-        toast.error("Error during sign-up:", error.msg);
+        toast.error(`Error during sign-up: ${error.message}`);
       }
     }
   };
 
+
   if (isAuth) {
-    return <CurrentUserPage authUser={auth} />;
+    return <CurrentUserPage authUser={userdata} />;
   } else {
     return (
       <div id="main">
@@ -94,12 +132,17 @@ function App() {
           </div>
           <div id="hero-form">
             {currentForm === "login" && (
-              <div id="loginform" className="container">
+              <form
+                id="loginform"
+                className="container"
+                onSubmit={handleLoginSubmit}
+              >
                 <h1>Welcome Back</h1>
                 <input
                   className="inputs"
                   type="text"
                   placeholder="Email"
+                  name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -108,15 +151,16 @@ function App() {
                   className="inputs"
                   type="password"
                   placeholder="Password"
+                  name="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                <button id="login-btn" onClick={handleLoginSubmit}>
+                <button className="login-btn" type="submit">
                   Log in
                 </button>
                 <p>OR</p>
-                <button id="login-btn" onClick={handleGoogleSignin}>
+                <button className="login-btn" onClick={handleGoogleSignin}>
                   <img src={googleIcon} alt="googleicon" />
                   Log in with Google
                 </button>
@@ -126,15 +170,20 @@ function App() {
                     Signup
                   </a>
                 </h4>
-              </div>
+              </form>
             )}
             {currentForm === "signup" && (
-              <div id="signup" className="container">
+              <form
+                id="signup"
+                className="container"
+                onSubmit={handleSignupSubmit}
+              >
                 <h1>Create an Account</h1>
                 <input
                   className="inputs"
                   type="text"
                   placeholder="Name"
+                  name="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
@@ -143,6 +192,7 @@ function App() {
                   className="inputs"
                   type="text"
                   placeholder="Email"
+                  name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -151,15 +201,16 @@ function App() {
                   className="inputs"
                   type="password"
                   placeholder="Password"
+                  name="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                <button id="login-btn" onClick={handleSignupSubmit}>
+                <button className="login-btn" type="submit">
                   Sign up
                 </button>
                 <p>OR</p>
-                <button id="login-btn" onClick={handleGoogleSignin}>
+                <button className="login-btn" onClick={handleGoogleSignin}>
                   <img src={googleIcon} alt="googleicon" /> Sign up with Google
                 </button>
                 <h4>
@@ -168,7 +219,7 @@ function App() {
                     Login
                   </a>
                 </h4>
-              </div>
+              </form>
             )}
             <ToastContainer
               position="top-center"
@@ -181,7 +232,6 @@ function App() {
               draggable
               pauseOnHover
               theme="light"
-              transition:Bounce
             />
           </div>
         </div>

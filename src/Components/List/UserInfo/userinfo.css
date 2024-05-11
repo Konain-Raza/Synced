@@ -1,0 +1,39 @@
+#userinfo{
+    background-color: green;
+    width: 100%;
+    height: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user{
+    width: 100%;
+    height: 60%;
+    display: flex;
+    gap: 0.3vw;
+    padding: 0vw 0.5vw;
+    justify-content: space-between;
+    align-items: center;
+}
+.user>h2{
+    width: 50%;
+}
+
+.user>image{
+    width: 10%;
+    height: 100px;
+}
+#icons-box{
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 70%;
+    width: 30%;
+}
+#icons-box>i{
+    
+    font-size: 1.5rem;
+    color: white;
+}

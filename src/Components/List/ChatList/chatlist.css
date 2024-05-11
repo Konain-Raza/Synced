@@ -1,0 +1,92 @@
+#chatlist{
+    width: 100%;
+    height: 85%;
+    /* flex: 1; */
+    /* overflow-y: scroll; */
+    background-color: yellow;
+}
+#searchbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 15%;
+    /* padding: 0vh 0.5vw; */
+}
+
+#search-input{
+    padding: 10px;
+    border-radius: 10px;
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    background-color: purple;
+}
+
+#search-input>input{
+    width: 90%;
+    height: 100%;
+    
+    background: none;
+    border: none;
+}
+#search-input>input:active{
+background: none;
+border: none;
+}
+
+#add-button{
+    background-color: paleturquoise;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#joined-users{
+    align-items: center;
+    background-color: pink;
+    width: 100%;
+    height: 85%;
+    gap: 1.5vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+.chat-users{
+    padding: 5px;
+    background-color: green;
+    width: 95%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap:0.5vw
+}
+
+.chat-users>img{
+    width: 60px;
+    height: 60px;
+}
+
+#name-msg{
+    width: 70%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0px;
+    padding-left: 5px;
+    background-color: yellow;
+
+}
+#name-msg>h1{
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+}
+#name-msg>p{
+    margin: 0;
+    padding: 0;
+    font-size: 0.8rem;
+}

@@ -11,13 +11,15 @@
   },
   "dependencies": {
     "@remixicon/react": "^4.2.0",
+    "emoji-picker-react": "^4.9.2",
     "firebase": "^10.11.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-toastify": "^10.0.5",
     "remixicon": "^4.2.0",
-    "universal-cookie": "^7.1.4"
+    "universal-cookie": "^7.1.4",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

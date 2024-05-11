@@ -129,7 +129,6 @@ gap: 5vw;
   /* top: 0; */
   rotate: -10deg;
   left: 32%;
-  
   bottom: 3%;
   width: 25rem;
   /* animation-name: girnelaga; */
@@ -168,6 +167,7 @@ padding-bottom: 15px;
 }
 
 #hero-content>p{
+  z-index: 100;
   /* width: 10%; */
   margin: 0;
   
