@@ -11,7 +11,8 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
-import { db, storage } from "../firebase-config";
+import { db } from "../firebase-config";
+import { storage } from "../firebase-config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import useUserStore from "/src/Components/libraries/userStore.js";
 import { useChatStore } from "../libraries/chatStore";
@@ -44,7 +45,7 @@ const Chat = () => {
   });
   const { currentUser } = useUserStore();
   const { chatId, user, isCurrentUserBlocked, changeBlock, isRecieverBlocked } =
-    useChatStore(); 
+    useChatStore();
   const handleEmojis = (e) => {
     console.log(e.emoji); // Log only the emoji character
     setNewMessage((prevMessage) => prevMessage + e.emoji);
@@ -93,7 +94,8 @@ const Chat = () => {
     }
   };
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
     if (!chatId || (!newmessage && !image.url)) {
       return; // Exit if chatId is undefined or null, and both newmessage and image are empty
     }
@@ -162,7 +164,7 @@ const Chat = () => {
           chats?.messages?.map((message) => (
             <div
               className={
-                message.senderId === currentUser.id ? "own-msg" : "other-msg"
+                message.senderId === currentUser.id ? "other-msg" : "own-msg"
               }
               key={message?.createdAt}
             >
@@ -182,51 +184,51 @@ const Chat = () => {
         <div ref={endRef}></div>
       </div>
 
-      <div id="new-message-box">
-        <div id="icons-box-3">
-          <label htmlFor="file">
-            <i className="ri-image-line"></i>
-          </label>
+      <form id="new-message-box" type="submit" onSubmit={handleSendMessage}>
+        <div id="msg-type">
+          <div id="icons-box-3">
+            <label htmlFor="file">
+              <i className="ri-image-line"></i>
+            </label>
+            <input
+              type="file"
+              name="file"
+              id="file"
+              style={{ display: "none" }}
+              onChange={handleImage}
+            />
+          </div>
           <input
-            type="file"
-            name="file"
-            id="file"
-            style={{ display: "none" }}
-            onChange={handleImage}
+            type="text"
+            id="msginput"
+            placeholder={
+              isCurrentUserBlocked || isRecieverBlocked
+                ? "You can't send a message"
+                : "Type a message"
+            }
+            value={newmessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            disabled={isCurrentUserBlocked || isRecieverBlocked}
           />
-        </div>
-        <input
-          type="text"
-          id="msginput"
-          placeholder={
-            isCurrentUserBlocked || isRecieverBlocked
-              ? "You can't send a message"
-              : "Type a message"
-          }
-          value={newmessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          disabled={isCurrentUserBlocked || isRecieverBlocked}
-        />
 
-        <div id="emoji">
-          <img src={emoji} alt="" onClick={() => setOpen((prev) => !prev)} />
-          <div id="emoji-container">
-            {open && (
-              <EmojiPicker
-                onEmojiClick= {handleEmojis}
-              />
-            )}
+          <div id="emoji">
+          <i className="ri-user-smile-line"onClick={() => setOpen((prev) => !prev)}></i>
+            {/* <img src={emoji} alt=""  /> */}
+            <div id="emoji-container">
+              {open && <EmojiPicker onEmojiClick={handleEmojis} />}
+            </div>
           </div>
         </div>
 
         <button
+          type="submit"
           id="sendmsg-btn"
           onClick={handleSendMessage}
           disabled={isCurrentUserBlocked || isRecieverBlocked}
         >
           Send
         </button>
-      </div>
+      </form>
     </div>
   );
 };

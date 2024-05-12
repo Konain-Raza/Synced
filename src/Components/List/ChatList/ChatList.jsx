@@ -144,7 +144,7 @@ const ChatList = () => {
             className="chat-users"
             key={chat.chatId}
             onClick={() => handleSelectChat(chat)}
-            style={{ backgroundColor: chat.isSeen ? "transparent" : "blue" }}
+            style={{ backgroundColor: chat.isSeen ? "white" : "blue"}}
           >
             <img src={avatar} alt="user-image" />
             <div id="name-msg">

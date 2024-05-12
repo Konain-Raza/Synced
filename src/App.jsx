@@ -12,7 +12,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { auth, db, provider} from "./firebase-config";
+import { auth, db, provider} from "./Components/firebase-config";
 import { doc, setDoc } from "firebase/firestore";
 import CurrentUserPage from "./Components/CurrentUser/CurrentUser";
 import { GoogleAuthProvider } from "firebase/auth/cordova";
