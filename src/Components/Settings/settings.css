@@ -1,0 +1,36 @@
+#settingsBox{
+    position: absolute;
+    height: 55%;
+    padding: 50px;
+    width: max-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    background-color: aqua;
+    left: 0;
+    border-radius: 15px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+#settingsBox>button{
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 16px;
+background-color: blue;
+}
+#settingsBox>input:first-child{
+padding: 17px;
+border-radius: 7px;
+border: none;
+}
+
+#settingsBox>input:nth-child(2){
+    width: 90%;
+    padding: 17px;
+    border-radius: 7px;
+    border: none;
+}

@@ -1,28 +1,34 @@
+import React, { useState } from 'react';
 import "./userinfo.css";
 import avatar from "./Images/avatar.png";
-import useUserStore from "../../libraries/userStore";
+import Settings from "../../Settings/Settings";
 
 const UserInfo = ({ currentUser }) => {
-  // const { currentUser } = useUserStore();
+  const [settingsVisible, setSettingsVisible] = useState(false);
+  const [chatUser, setChatUser] = useState(currentUser); // Initialize chatUser state with currentUser
 
-  // Add a conditional check to prevent errors if currentUser is null or undefined
-  if (!currentUser) {
-    return null; // Render nothing if currentUser is null or undefined
-  } else {
-    // console.log()
-  }
+  // Function to toggle settings visibility
+  const toggleSettings = () => {
+    setSettingsVisible(prev => !prev);
+  };
+
+  // Callback function to update chatUser state
+  const updateChatUser = (newUserData) => {
+    setChatUser(newUserData);
+  };
 
   return (
     <div id="userinfo">
       <div className="user">
         <div id="name">
-        <img src={avatar} alt="user-image" />
-        <h2>{currentUser.username}</h2>
+          <img src={avatar} alt="user-image" />
+          <h2>{chatUser.username}</h2>
         </div>
         <div id="icons-box">
-          <i class="ri-settings-3-line"></i>
+          <i className="ri-settings-3-line" onClick={toggleSettings}></i>
         </div>
       </div>
+      {settingsVisible && <Settings currentUser={currentUser} onUpdate={updateChatUser} />} 
     </div>
   );
 };
