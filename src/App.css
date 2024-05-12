@@ -53,7 +53,7 @@ align-items: center;
   font-weight: bold;
  }
 
- #login-btn{
+ .login-btn{
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -69,12 +69,28 @@ align-items: center;
   color: white;
   background-color: #4461F2;
  }
+ .google-btn{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 10px;
+  border: none;
+  width: 100%;
+  height: max-content;
+  padding: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: rgb(102, 100, 100);
+  border: 1px solid lightgray;
+ }
  #container>h1{
   font-size: clamp(1.25rem, 1.125rem + 1vw, 1.875rem);
 }
 
-#login-btn>img{
-  width:8%;
+.google-btn>img{
+  width:10%;
 }
 
 #hero{
@@ -109,6 +125,7 @@ gap: 5vw;
   background-color: #4461F2;
 }
 #hero-content{
+  font-weight: 500;
   z-index: 40;
   /* background-color: aqua; */
   display: flex;  
@@ -116,7 +133,8 @@ gap: 5vw;
   /* align-items: center; */
   text-align: left;
   /* justify-content: center; */
-  padding-top: 23%;
+  margin-top: -10vh;
+  justify-content: center;
   padding-left: 2%;
   height: 100%;
   /* padding: 10px; */

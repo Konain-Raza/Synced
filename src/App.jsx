@@ -160,7 +160,7 @@ function App() {
                   Log in
                 </button>
                 <p>OR</p>
-                <button className="login-btn" onClick={handleGoogleSignin}>
+                <button className="google-btn" onClick={handleGoogleSignin}>
                   <img src={googleIcon} alt="googleicon" />
                   Log in with Google
                 </button>
@@ -210,7 +210,7 @@ function App() {
                   Sign up
                 </button>
                 <p>OR</p>
-                <button className="login-btn" onClick={handleGoogleSignin}>
+                <button className="google-btn" onClick={handleGoogleSignin}>
                   <img src={googleIcon} alt="googleicon" /> Sign up with Google
                 </button>
                 <h4>

@@ -147,7 +147,9 @@ font-weight: 1000;
 }
 .own-msg-contain>p, .other-msg-contain >p{
     height: auto;
-    
+    overflow: hidden; /* Added overflow property */
+    text-overflow: ellipsis; /* Added text-overflow property */
+    white-space: nowrap; /* Added white-space proper
     padding: 0;
     margin: 0;
 }
@@ -162,6 +164,11 @@ font-weight: 1000;
     height: 50px;
 }
 .own-msg-contain>p{
+    min-width: max-content;
+    max-width: 70%;
+    height: max-content;
+    display: flex;
+    flex-direction: column;
     background-color: lightblue;
     display: flex;
     padding: 15px;
@@ -177,6 +184,7 @@ font-weight: 1000;
     border-radius: 12px;
 }
 .other-msg{
+    
     height: auto;
 
     /* padding-left: 50%; */
