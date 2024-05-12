@@ -2,21 +2,22 @@ import "./currentUser.css";
 import { useEffect, useState } from "react";
 import Chat from "../Chat/Chat";
 import List from "../List/List";
-import Detail from "../Detail/Detail";
-import userStore from "../libraries/userStore";
+import useUserStore from "../libraries/userStore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
-
+import App from "../../App";
+import { useChatStore } from "../libraries/chatStore";
+  
 const CurrentUser = (props) => {
-  const { currentUser, isLoading, fetchUserInfo } = userStore();
-  const [user, setUser] = useState(props.authUser);
+  const { chatId } = useChatStore();
+  const { currentUser, fetchUserInfo } = useUserStore();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const unSub = onAuthStateChanged(auth, (user) => {
+    const unSub = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        console.log(user)
-        fetchUserInfo(user.uid);
-        
+        await fetchUserInfo(user.uid);
+        setIsLoading(false); // Set loading to false after user data is fetched
       }
     });
 
@@ -25,15 +26,18 @@ const CurrentUser = (props) => {
     };
   }, [fetchUserInfo]);
 
-
+  // Render loading indicator if data is still loading
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div id="currentUser">
-      <List />
-      <Chat />
-      <Detail />
+      <List currentUser={currentUser}/>
+      {chatId ? <Chat currentUser={currentUser}/> : <div style={{width: "60%", height: "100%"}}>Begin Chatting</div>}
+      {/* {chatId ? <Chat currentUser={currentUser}/> : <div width50% height 100%>Begin Chatting</div>} */}
     </div>
   );
-};
-
+}
+  
 export default CurrentUser;

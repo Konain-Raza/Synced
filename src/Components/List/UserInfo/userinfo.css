@@ -1,5 +1,5 @@
 #userinfo{
-    background-color: green;
+    background-color: lightblue;
     width: 100%;
     height: 15%;
     display: flex;
@@ -16,24 +16,36 @@
     justify-content: space-between;
     align-items: center;
 }
-.user>h2{
-    width: 50%;
+#name>h2{
+    margin: 0;
+    padding: 0;
+font-size: 2rem;
+
 }
 
-.user>image{
-    width: 10%;
-    height: 100px;
+#name>img{
+    margin: 0;
+    padding: 0;
+    width: 60px;
+    height: 60px;
 }
 #icons-box{
-
     display: flex;
     justify-content: space-around;
     align-items: center;
     height: 70%;
-    width: 30%;
+    width: max-content;
+}
+#name
+{
+    width: max-content;
+    height: 100%;
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    gap: 1.5vw;
 }
 #icons-box>i{
-    
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     color: white;
 }
