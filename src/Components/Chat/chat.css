@@ -63,10 +63,13 @@ align-items: center;
     flex-direction: column;
     gap: 2vh;
     overflow-x: hidden;
-    height: 75%;
+    height: 72%;
     background-color: #F6F8FC;
 }
 #new-message-box{
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+background-color: whitesmoke;
 padding: 0vh 1.5vw;
     justify-content: space-between;
     gap: 1vw;
@@ -74,7 +77,7 @@ padding: 0vh 1.5vw;
     display: flex;
     min-width: max-content;
     max-width: 100%;
-    height: 10%;
+    height: 13%;
 }
 #icons-box-3>label>i{
 font-size: 2rem;
@@ -150,14 +153,7 @@ font-weight: 1000;
     height: auto;
     overflow: hidden; /* Added overflow property */
     text-overflow: ellipsis; /* Added text-overflow property */
-    white-space: nowrap; /* Added white-space proper
-    padding: 0;
-    margin: 0;
-}
-.own-msg>img{
-    width: 50px;
-    height: 50px;
-    /* align-self: self-start; */
+    white-space: nowrap;
 }
 
 #blockeddiv{
@@ -171,6 +167,7 @@ display: flex;
 #blockeddiv>h2{
     font-size: 2rem;
 }
+
  .other-msg>img{
     
     width: 50px;

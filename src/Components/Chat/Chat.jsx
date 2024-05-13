@@ -9,12 +9,12 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
+import toast from "react-hot-toast";
 import { db } from "../firebase-config";
 import upload from "../libraries/Upload";
 import useUserStore from "/src/Components/libraries/userStore.js";
 import { useChatStore } from "../libraries/chatStore";
 import avatar from "../List/UserInfo/Images/avatar.png";
-import toast from "react-hot-toast";
 
 const Chat = () => {
   const { currentUser } = useUserStore();
@@ -171,7 +171,7 @@ const Chat = () => {
             >
               <div
                 className={
-                  message.senderId === currentUser.id ? "own-msg" : "other-msg"
+                  message.senderId === currentUser.id ? "other-msg" : "own-msg"
                 }
               >
                 <img src={avatar} alt="" />
@@ -181,8 +181,8 @@ const Chat = () => {
               <div
                 className={
                   message.senderId === currentUser.id
-                    ? "own-msg-contain"
-                    : "other-msg-contain"
+                    ? "other-msg-contain"
+                    : "own-msg-contain"
                 }
               >
                 {message.text && <p>{message.text}</p>}

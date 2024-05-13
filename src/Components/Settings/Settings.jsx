@@ -53,6 +53,7 @@ const Settings = ({ currentUser, onUpdate }) => {
       toast.success( `${currentUser.username} you data updated successfully!`);
       onUpdate({ ...currentUser, username: newname, avatar: imageUrl });
       
+      
 
     } catch (error) {
       toast.error("Error updating user data:", error);
@@ -76,7 +77,7 @@ const Settings = ({ currentUser, onUpdate }) => {
       />
       <button type="submit">Confirm</button>
       <ToastContainer
-              position="bottom-right"
+              position="top-center"
               autoClose={5000}
               hideProgressBar={false}
               newestOnTop={false}
