@@ -1,8 +1,6 @@
 import "./chat.css";
 import EmojiPicker from "emoji-picker-react";
-import avatar from "../List/UserInfo/Images/avatar.png";
 import { useEffect, useRef, useState } from "react";
-import emoji from "./emoji.png";
 import {
   doc,
   getDoc,
@@ -12,42 +10,46 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 import { db } from "../firebase-config";
-import { storage } from "../firebase-config";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import upload from "../libraries/Upload";
 import useUserStore from "/src/Components/libraries/userStore.js";
 import { useChatStore } from "../libraries/chatStore";
-
-import { update } from "firebase/database";
-
-// Chat.jsx
-// Assuming you have a Firebase storage instance set up
-
-const uploadImage = async (file) => {
-  try {
-    const storageRef = ref(storage, `images/${file.name}`);
-    await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(storageRef); // Get the download URL
-    return downloadURL;
-  } catch (error) {
-    throw new Error("Error uploading image: " + error.message);
-  }
-};
+import avatar from "../List/UserInfo/Images/avatar.png";
+import toast from "react-hot-toast";
 
 const Chat = () => {
-  // const { currentUser } = useUserStore();
+  const { currentUser } = useUserStore();
   const [open, setOpen] = useState(false);
   const [chats, setChats] = useState("");
   const [blockedStatus, setBlockedStatus] = useState(false);
   const [newmessage, setNewMessage] = useState("");
   const [image, setImage] = useState({
     file: null,
-    url: "",
+    url: currentUser.avatar || "", // Set initial URL if available
   });
-  const { currentUser } = useUserStore();
+
+  const handleimage = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+  
+    try {
+      const imageURL = await upload(file);
+      setImage({
+        file: file,
+        url: imageURL,
+      });
+      // setNewMessage(""); // Clear the message input
+      // handleSendMessage(); // Trigger handleSendMessage after image upload
+    } catch (error) {
+      toast.error("Error handling image:", error);
+    }
+  };
+  
+  
+
   const { chatId, user, isCurrentUserBlocked, changeBlock, isRecieverBlocked } =
     useChatStore();
+
   const handleEmojis = (e) => {
-    console.log(e.emoji); // Log only the emoji character
     setNewMessage((prevMessage) => prevMessage + e.emoji);
     setOpen(false); // Close the emoji picker
   };
@@ -65,6 +67,7 @@ const Chat = () => {
       unSub();
     };
   }, [chatId]);
+
   const handleBlock = async () => {
     if (!user) return;
     const userDocRef = doc(db, "users", currentUser.id);
@@ -75,22 +78,7 @@ const Chat = () => {
       changeBlock();
       setBlockedStatus(!isRecieverBlocked);
     } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleImage = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    try {
-      const imageURL = await uploadImage(file);
-      setImage({
-        file: file,
-        url: imageURL,
-      });
-      setNewMessage(""); // Clear the message input
-    } catch (error) {
-      console.error("Error handling image:", error);
+      toast.log(error);
     }
   };
 
@@ -99,13 +87,18 @@ const Chat = () => {
     if (!chatId || (!newmessage && !image.url)) {
       return; // Exit if chatId is undefined or null, and both newmessage and image are empty
     }
+    let ImageUrl = null;
+
     try {
+      if (image.file) {
+        ImageUrl = await upload(image.file);
+      }
       await updateDoc(doc(db, "chats", chatId), {
         messages: arrayUnion({
           senderId: currentUser.id,
           text: newmessage,
           createdAt: new Date(),
-          img: image.url,
+          ...(ImageUrl && { image: ImageUrl }), // Corrected 'Ima' to 'ImageUrl'
         }),
       });
 
@@ -131,19 +124,21 @@ const Chat = () => {
         }
       }
     } catch (error) {
-      console.log(error);
+      toast.log(error);
     }
     setImage({
       file: null,
       url: "",
     });
     setNewMessage("");
+
   };
+
   return (
     <div id="chat">
       <div id="current-chatuserinfo">
         <div id="info-1">
-          <img src={avatar} alt="user-image" />
+          <img src={user.avatar || avatar} alt="user-image" />
           <div id="name-status">
             <h2>{user.username}</h2>
             {user.status && <p>{user.status}</p>}
@@ -160,7 +155,13 @@ const Chat = () => {
         </div>
       </div>
       <div id="whole-chat">
-        {!blockedStatus &&
+        {isCurrentUserBlocked || isRecieverBlocked ? (
+          
+          <div id="blockeddiv">
+           <h2>{isCurrentUserBlocked ? "You're Blocked!" : "Unblock User"}</h2>
+          </div>
+        ) : (
+          !blockedStatus &&
           chats?.messages?.map((message) => (
             <div
               className={
@@ -168,8 +169,15 @@ const Chat = () => {
               }
               key={message?.createdAt}
             >
-              <img src={avatar} alt="" />
-              {message.img && <img src={message.img} alt="chat-img" />}{" "}
+              <div
+                className={
+                  message.senderId === currentUser.id ? "own-msg" : "other-msg"
+                }
+              >
+                <img src={avatar} alt="" />
+                {message.image && <img src={message.image} alt="chat-img" />}
+              </div>
+
               <div
                 className={
                   message.senderId === currentUser.id
@@ -177,17 +185,19 @@ const Chat = () => {
                     : "other-msg-contain"
                 }
               >
-                <p>{message.text}</p>
+                {message.text && <p>{message.text}</p>}
+
               </div>
             </div>
-          ))}
+          ))
+        )}
         <div ref={endRef}></div>
       </div>
 
       <form id="new-message-box" type="submit" onSubmit={handleSendMessage}>
         <div id="msg-type">
           <div id="icons-box-3">
-            <label htmlFor="file">
+            <label htmlFor="file" >
               <i className="ri-image-line"></i>
             </label>
             <input
@@ -195,7 +205,7 @@ const Chat = () => {
               name="file"
               id="file"
               style={{ display: "none" }}
-              onChange={handleImage}
+              onChange={handleimage}
             />
           </div>
           <input
@@ -212,8 +222,10 @@ const Chat = () => {
           />
 
           <div id="emoji">
-          <i className="ri-user-smile-line"onClick={() => setOpen((prev) => !prev)}></i>
-            {/* <img src={emoji} alt=""  /> */}
+            <i
+              className="ri-user-smile-line"
+              onClick={() => setOpen((prev) => !prev)}
+            ></i>
             <div id="emoji-container">
               {open && <EmojiPicker onEmojiClick={handleEmojis} />}
             </div>
@@ -223,7 +235,6 @@ const Chat = () => {
         <button
           type="submit"
           id="sendmsg-btn"
-          onClick={handleSendMessage}
           disabled={isCurrentUserBlocked || isRecieverBlocked}
         >
           Send

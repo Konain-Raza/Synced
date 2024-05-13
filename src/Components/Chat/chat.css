@@ -1,7 +1,6 @@
 #chat{
     width: 70%;
     height: 100%;
-    background-color: aqua;
 }
 #current-chatuserinfo{
     padding: 0vh 0.7vw;
@@ -59,11 +58,11 @@ align-items: center;
     margin: 0;
     padding: 0vh 1.5vw;
     overflow-y: auto;
-    width: 100%;
+    width: 100% !important;
     display: flex;
     flex-direction: column;
     gap: 2vh;
-    
+    overflow-x: hidden;
     height: 75%;
     background-color: #F6F8FC;
 }
@@ -75,11 +74,11 @@ padding: 0vh 1.5vw;
     display: flex;
     min-width: max-content;
     max-width: 100%;
-    background-color: blueviolet;
     height: 10%;
 }
 #icons-box-3>label>i{
 font-size: 2rem;
+color: black;
 }
 #icons-box-3{
     width: 10%;
@@ -90,6 +89,8 @@ font-size: 2rem;
 }
 
 #msginput{
+    background-color: #F6F8FC;
+
     color: black;
     border-radius: 10px;
     border: none;
@@ -114,24 +115,24 @@ font-size: 2rem;
 
 }
 #emoji>i{
+    color: black;
     font-weight: 500;
     font-size: 2rem;
 }
 #emoji-container{
     width: 50%;
     height: max-content;
-    background-color: aqua;
     position: absolute;
     bottom: 50px;
     right: 400px;
 }
 #sendmsg-btn{
 width: 10%;
-background-color: blue;
+background-color: #105ef3;
 color: white;
 font-weight: 1000;
     padding: 12px;
-    border-radius: 5px;
+    border-radius: 13px;
     border: none;
 }
 
@@ -158,6 +159,18 @@ font-weight: 1000;
     height: 50px;
     /* align-self: self-start; */
 }
+
+#blockeddiv{
+    width: 100%;
+    height: 100%;
+    /* background-color: red; */
+    justify-content: center;
+    align-items: center;
+display: flex;
+}
+#blockeddiv>h2{
+    font-size: 2rem;
+}
  .other-msg>img{
     
     width: 50px;
@@ -169,15 +182,16 @@ font-weight: 1000;
     height: max-content;
     display: flex;
     flex-direction: column;
-    background-color: lightblue;
+    color: white;
+    background-color: #105ef3;
     display: flex;
     padding: 15px;
     border-radius: 12px;
     flex-direction: column;
 }
 .other-msg-contain>p{
-    
-    background-color: lightcoral;
+    color: grey;
+    background-color: white;
     padding: 13px;
     height: auto;
 
@@ -202,7 +216,7 @@ align-self:flex-end;
     border-radius: 12px;
 }
 #chat-img{
-    background-color: blue;
+    /* background-color: blue; */
     width: 100%;
     height: 200px;
     object-fit: cover;
@@ -210,8 +224,8 @@ align-self:flex-end;
 
 #block-btn{
     cursor: pointer;
-    padding: 18px;
-    background-color: red;
+    padding: 13px;
+    background-color: rgba(255, 0, 0, 0.856);
     outline: none;
     border: none;
     color: white;
@@ -223,7 +237,9 @@ align-self:flex-end;
     font-size: 1rem;
 } */
 #msg-type{
+    /* background-color: red; */
     align-items: center;
+    justify-content: space-around;
     height: 80%;
     width: 80%;
     display: flex;

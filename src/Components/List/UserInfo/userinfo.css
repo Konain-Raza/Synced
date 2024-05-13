@@ -6,6 +6,8 @@
     justify-content: space-between;
     padding: 11px;
     align-items: center;
+    border-right: 1px solid lightgray;
+
 }
 
 .user{
@@ -27,13 +29,14 @@ font-size: 2rem;
 #name>img{
     margin: 0;
     padding: 0;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
 }
 #icons-box{
     display: flex;
     justify-content: space-around;
     align-items: center;
+    gap: 1vw;
     height: 70%;
     width: max-content;
 }
@@ -47,6 +50,6 @@ font-size: 2rem;
     gap: 1.5vw;
 }
 #icons-box>i{
-    font-size: 2.5rem;
-    color: white;
+    font-size: 2rem;
+    color: black;
 }

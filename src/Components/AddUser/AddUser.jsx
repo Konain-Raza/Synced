@@ -77,7 +77,7 @@ const AddUser = () => {
 
   return (
     <div id="addUser">
-      <form onSubmit={handleSearchuser}>
+      <form onSubmit={handleSearchuser} id="search-add-user">
         <input type="text" name="username" />
         <button type="submit" id="search">
           Search
@@ -87,7 +87,7 @@ const AddUser = () => {
         <div id="all-users">
           {users.map((user) => (
             <div className="userDetail" key={user.id}>
-              <img src={avatar} alt="" />
+              <img src={user.avatar || avatar} alt="" />
               <span>{user.username}</span>
               <button id="idUser" onClick={handleAddUser}>
                 Add user

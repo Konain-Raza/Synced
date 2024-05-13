@@ -6,7 +6,9 @@ import "remixicon/fonts/remixicon.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import googleIcon from "./assets/icons8-google.svg";
+
 import {
+  sendEmailVerification,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -18,6 +20,7 @@ import CurrentUserPage from "./Components/CurrentUser/CurrentUser";
 import { GoogleAuthProvider } from "firebase/auth/cordova";
 
 function App() {
+  
   const cookies = new Cookies();
 
   const [username, setUsername] = useState("");
@@ -72,9 +75,7 @@ function App() {
       
         cookies.set("auth-token", response._tokenResponse.refreshToken);
         toast.success("Successfully Logged In");
-        // console.log(response.user.uid)
         setuserdata(response.user.uid);
-        console.log(userdata)
 
         setIsAuth(true);
       } catch (error) {
@@ -87,30 +88,40 @@ function App() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const { username, email, password } = Object.fromEntries(formData);
-
+  
     if (email.length === 0 || password.length === 0 || username.length === 0) {
       toast.warning("Please fill all the fields");
     } else {
       try {
         const response = await createUserWithEmailAndPassword(auth, email, password);
         setuserdata(response.user.uid);
-
-
+  
         await setDoc(doc(db, "users", response.user.uid), {
           username,
           email,
           id: response.user.uid,
           blocked: [],
         });
+  
         await setDoc(doc(db, "userchats", response.user.uid), {
-          chats:[]
-             });
+          chats: []
+        });
+  
+        if (!response.user.emailVerified) {
+          // Send verification email if the user's email is not verified
+          await sendEmailVerification(response.user);
+          toast.info("Verification email sent. Please verify your email.");
+        } else {
+          toast.info("Email already verified.");
+        }
+  
         toast.success(`Congratulations, You're Successfully Registered`);
       } catch (error) {
         toast.error(`Error during sign-up: ${error.message}`);
       }
     }
   };
+  
 
 
   if (isAuth) {

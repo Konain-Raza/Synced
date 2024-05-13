@@ -6,16 +6,15 @@ import useUserStore from "../../libraries/userStore";
 import { doc, onSnapshot, getDoc, updateDoc } from "firebase/firestore"; // Import getDoc
 import { db } from "../../firebase-config";
 import { useChatStore } from "../../libraries/chatStore.js";
+import { ToastContainer, toast } from "react-toastify";
 
 const ChatList = () => {
   const [chats, setChats] = useState([]);
   const [modifyuser, setModifyUser] = useState(false);
   const { currentUser } = useUserStore();
-  const { changeChat } = useChatStore(); // Destructure changeChat from useChatStore
-  const [input, setInput] = useState("")
-
-
-
+  const { changeChat, isCurrentUserBlocked, isRecieverBlocked } =
+    useChatStore(); // Destructure changeChat, isCurrentUserBlocked, isRecieverBlocked from useChatStore
+  const [input, setInput] = useState("");
 
   const handleSelectChat = async (chat) => {
     // Change the parameter name from 'chats' to 'chat'
@@ -32,12 +31,20 @@ const ChatList = () => {
       await updateDoc(userChatRef, {
         chats: userChats,
       });
-      changeChat(chat.chatId, chat.user); // Pass chat.chatId and chat.user to changeChat
+      changeChat(chat.chatId, chat.user);
     } catch (error) {
-      console.log(error);
+      toast.log(error);
     }
-    // console.log(chat);
   };
+
+  const filterChats = chats.filter(
+    (c) =>
+      c &&
+      c.user &&
+      c.user.username &&
+      c.user.username.toLowerCase().includes(input.toLowerCase())
+  );
+
   useEffect(() => {
     const fetchChats = async () => {
       try {
@@ -57,7 +64,7 @@ const ChatList = () => {
                   user,
                 };
               } else {
-                console.log("recieverId is undefined:", item);
+                toast.error("recieverId is undefined:", item);
                 return null;
               }
             });
@@ -66,7 +73,7 @@ const ChatList = () => {
             const filteredChatData = chatData.filter((item) => item !== null);
             setChats(filteredChatData.sort((a, b) => b.updateAt - a.updatedAt));
           } else {
-            console.error(
+            toast.error(
               "Document does not exist for currentUser:",
               currentUser
             );
@@ -75,7 +82,7 @@ const ChatList = () => {
           setChats([]);
         }
       } catch (error) {
-        console.error("Error fetching chats:", error);
+        toast.error("Error fetching chats:", error);
       }
     };
 
@@ -96,7 +103,7 @@ const ChatList = () => {
                 user,
               };
             } else {
-              console.log("recieverId is undefined:", item);
+              toast.log("recieverId is undefined:", item);
               return null;
             }
           });
@@ -106,10 +113,7 @@ const ChatList = () => {
             setChats(filteredChatData.sort((a, b) => b.updateAt - a.updatedAt));
           });
         } else {
-          console.error(
-            "Document does not exist for currentUser:",
-            currentUser
-          );
+          toast.error("Document does not exist for currentUser:", currentUser);
         }
       }
     );
@@ -118,10 +122,13 @@ const ChatList = () => {
       unsubscribe(); // Unsubscribe from the snapshot listener when the component unmounts
     };
   }, [currentUser]);
-
-  const filterChats = chats.filter(c => c && c.user && c.user.username && c.user.username.toLowerCase().includes(input.toLowerCase()));
-
-  // const filterChats = chats.filter(c => c && c.username && c.username.toLowerCase().includes(input.toLowerCase()));
+  useEffect(() => {
+    filterChats.forEach((chat) => {
+      if (!chat.isSeen) {
+        toast.success(`New message from ${chat.user.username}`);
+      }
+    });
+  }, []);
 
 
   return (
@@ -129,7 +136,11 @@ const ChatList = () => {
       <div id="searchbar">
         <div id="search-input">
           <i className="ri-search-line"></i>
-          <input type="text" placeholder="Search" onChange={(e)=>setInput(e.target.value)} />
+          <input
+            type="text"
+            placeholder="Search"
+            onChange={(e) => setInput(e.target.value)}
+          />
         </div>
         <i
           className={modifyuser ? "ri-subtract-line" : "ri-add-line"}
@@ -144,15 +155,32 @@ const ChatList = () => {
             className="chat-users"
             key={chat.chatId}
             onClick={() => handleSelectChat(chat)}
-            style={{ backgroundColor: chat.isSeen ? "white" : "blue"}}
+            style={{
+              backgroundColor: chat.isSeen ? "white" : "#105ef3",
+              color: chat.isSeen ? "black" : "white"
+            }}
+            
           >
-            <img src={avatar} alt="user-image" />
+            <img src={chat.user.avatar || avatar} alt="user-image" />
             <div id="name-msg">
               <h1>{chat.user.username}</h1>
-              <p>{chat.lastMessage}</p>
+              {!isCurrentUserBlocked ||
+                (!isRecieverBlocked && <p>{chat.lastMessage}</p>)}
             </div>
           </div>
         ))}
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </div>
 
       {modifyuser && <AddUser />}

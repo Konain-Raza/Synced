@@ -28,13 +28,19 @@ const CurrentUser = (props) => {
 
   // Render loading indicator if data is still loading
   if (isLoading) {
-    return <div>Loading...</div>;
+    return  <div className="loader"></div> ;
   }
 
   return (
     <div id="currentUser">
       <List currentUser={currentUser}/>
-      {chatId ? <Chat currentUser={currentUser}/> : <div style={{width: "60%", height: "100%"}}>Begin Chatting</div>}
+      {chatId ? <Chat currentUser={currentUser}/> : <div id="onboard">
+        <h1>Welcome to Synced 🌟</h1>
+        <p>
+
+Get started by connecting with others! Add them to your chats and let the conversations flow. Share images 📷, messages 💬, and more to stay connected and build meaningful connections. Let Synced be your platform for fostering friendships and creating memories that last a lifetime.</p>
+        
+        </div>}
       {/* {chatId ? <Chat currentUser={currentUser}/> : <div width50% height 100%>Begin Chatting</div>} */}
     </div>
   );
