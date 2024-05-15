@@ -131,7 +131,7 @@ const ChatList = () => {
   }, []);
 
 
-  return (
+    return (
     <div id="chatlist">
       <div id="searchbar">
         <div id="search-input">
@@ -170,7 +170,7 @@ const ChatList = () => {
           </div>
         ))}
         <ToastContainer
-          position="bottom-right"
+          position="top-center"
           autoClose={3000}
           hideProgressBar={false}
           newestOnTop={true}

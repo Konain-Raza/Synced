@@ -17,11 +17,11 @@ height: 100vh;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
     position: absolute;
-  width: 30%;
+    width: max-content;
   height: max-content;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
   justify-content: flex-start;
   background-color: white;
 padding: 30px;
@@ -43,7 +43,7 @@ width: 100%;
 height: 20%;
 }
 #search-add-user>button{
-background-color: lightskyblue;
+background-color: #105ef3;
 border: none;
 padding: 15px;
 color: white;
@@ -71,8 +71,13 @@ padding: 2vh 0vw;
     gap: 2vh;
 }
 .userDetail>img{
+    border-radius: 50%;
+    object-fit: cover;
     width: 50px !important;
     height: 50px !important;
+}
+.userDetail>span{
+    font-size: clamp(0.625rem, 0.5398rem + 1.3636vw, 1.5625rem);
 }
 .userDetail{
     margin: auto;
@@ -87,4 +92,41 @@ padding: 2vh 0vw;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     
 
+}
+@media only screen and (max-width: 400px) {
+    #addUser{
+        width: 50%;
+height: max-content;
+padding: 10px;
+
+    }
+
+}
+@media only screen and (max-width: 768px) {
+    #addUser{
+        width: 50%;
+height: max-content;
+padding: 10px;
+/* max-width: 95%; */
+/* width: max-content; */
+    }
+    .userDetail{
+        
+        width: 100%;
+      
+        padding: 10px;
+
+        
+    
+    }
+    #idUser{
+        font-size: clamp(0.4375rem, 0.3864rem + 0.8182vw, 1rem);
+        /* font-size: ; */
+        background-color: lawngreen;
+        color: white;
+        font-weight: 800;
+        border: none;
+        padding: 7px;
+       
+    }
 }

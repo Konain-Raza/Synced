@@ -2,13 +2,77 @@
     width: 70%;
     height: 100%;
 }
+/* Container for own messages */
+.own-msg {
+    margin-left: 0;
+    gap: 10px;
+    align-items: center;
+    display: flex;
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 12px;
+    word-break: break-word; 
+}
+
+/* Container for paragraphs within own messages and other messages */
+.own-msg-contain > p,
+.other-msg-contain > p {
+    font-weight: bold;
+
+    width: 100%; /* Adjusted to ensure full use of container width */
+    font-size: clamp(0.625rem, 0.5909rem + 0.5455vw, 1rem);
+    overflow-wrap: break-word; /* Ensures long words break into the next line */
+    margin: 0; /* Reset margin to avoid unwanted spacing */
+}
+.other-msg-contain > p{
+    background-color: #105ef3;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+
+}
+.own-msg-contain > p{
+    background-color: white;
+    color: darkgrey;
+    padding: 10px;
+    border-radius: 10px;
+    
+}
+
+/* Container for other messages */
+.other-msg {
+    margin: 0;
+    gap: 1px;
+    align-items: center;
+    display: flex;
+    flex-direction: row-reverse;
+    align-self: flex-end;
+    max-width: 70%;
+    padding: 1px;
+    border-radius: 12px;
+    word-break: break-word; /* Ensures long words break into the next line */
+}
+
+/* Make sure paragraphs in other messages also wrap properly */
+.other-msg > p {
+    background-color: rebeccapurple !important;
+    margin: auto;
+    width: 100%; /* Ensure the paragraph takes the full width of the container */
+    font-size: clamp(0.625rem, 0.5909rem + 0.5455vw, 1rem);
+    overflow-wrap: break-word; /* Ensures long words break into the next line */
+    margin: 0; /* Reset margin to avoid unwanted spacing */
+}
+
 #current-chatuserinfo{
-    padding: 0vh 0.7vw;
+    padding: 1vh 0.7vw;
     align-items: center;
     width: 100%;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+
     height: 15%;
     background-color: white;
-    border-bottom: 2px solid rgba(128, 128, 128, 0.233);
+    /* border-bottom: 2px solid rgba(128, 128, 128, 0.233); */
     display: flex;
     justify-content: space-between;
 }
@@ -62,26 +126,24 @@ align-items: center;
     width: 100% !important;
     display: flex;
     flex-direction: column;
-    gap: 2vh;
+    gap: 1vh;
     overflow-x: hidden;
+ 
     height: 72%;
-    background-color: #F6F8FC;
+    background-color:#f3f2ed;
+    /* background-color: #F6F8FC; */
 }
 #new-message-box{
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
-background-color: whitesmoke;
 padding: 0vh 1.5vw;
     justify-content: space-between;
     gap: 1vw;
     align-items: center;
     display: flex;
-    min-width: max-content;
-    max-width: 100%;
+  width: 100%;
     height: 13%;
 }
 #icons-box-3>label>i{
-font-size: 2rem;
+    font-size: clamp(1rem, 0.9091rem + 1.4545vw, 2rem);
 color: black;
 }
 #icons-box-3{
@@ -93,7 +155,8 @@ color: black;
 }
 
 #msginput{
-    background-color: #F6F8FC;
+    background-color: #eff4ff;
+   
 
     color: black;
     border-radius: 10px;
@@ -121,7 +184,8 @@ color: black;
 #emoji>i{
     color: black;
     font-weight: 500;
-    font-size: 2rem;
+    font-size: clamp(1rem, 0.9091rem + 1.4545vw, 2rem);
+
 }
 #emoji-container{
     width: 50%;
@@ -131,7 +195,7 @@ color: black;
     right: 400px;
 }
 #sendmsg-btn{
-width: 10%;
+/* width: 5%; */
 background-color: #105ef3;
 color: white;
 font-weight: 1000;
@@ -140,77 +204,25 @@ font-weight: 1000;
     border: none;
 }
 
-.own-msg{
-    height: auto;
-    margin-left: 0px;
-    gap: 10px;
-    align-items: flex-start;
-    display: flex;
-    max-width: 70%;
-    padding: 1px;
-    border-radius: 12px;
-}
-.own-msg-contain>p, .other-msg-contain >p{
-    height: auto;
-    overflow: hidden; /* Added overflow property */
-    text-overflow: ellipsis; /* Added text-overflow property */
-    white-space: nowrap;
-}
+
+
 
 #blockeddiv{
     width: 100%;
     height: 100%;
-    /* background-color: red; */
+
+    background-color: red !important;
     justify-content: center;
     align-items: center;
 display: flex;
+flex-direction: column;
 }
-#blockeddiv>h2{
-    font-size: 2rem;
+#blockeddiv>h1{
+    font-size: clamp(1rem, 0.9091rem + 1.4545vw, 2rem);
 }
 
-
-.own-msg-contain>p{
-    min-width: max-content;
-    max-width: 70%;
-    height: max-content;
-    display: flex;
-    flex-direction: column;
-    color: white;
-    background-color: #105ef3;
-    display: flex;
-    padding: 15px;
-    border-radius: 12px;
-    flex-direction: column;
-}
-.other-msg-contain>p{
-    color: grey;
-    background-color: white;
-    padding: 13px;
-    height: auto;
-
-    border-radius: 12px;
-}
-.other-msg{
-    
-    height: auto;
-
-    /* padding-left: 50%; */
-    /* margin-left: 100px; */
-    margin: 0;
- /* background-color: aqua; */
-    flex-direction: row-reverse;
-align-self:flex-end;
-    gap: 10px;
-    align-items: flex-start;
-    display: flex;min-width: max-content;
-    max-width: 70%;
-    height: auto;
-    padding: 10px;
-    border-radius: 12px;
-}
 #chat-img{
-    /* background-color: blue; */
+    background-color: blue;
     width: 100%;
     height: 200px;
     object-fit: cover;
@@ -244,13 +256,17 @@ align-self:flex-end;
     #chat{
         width: 100%;
         height: 70%;
+        background-color: #F5F6F1 !important;
     }
     #current-chatuserinfo{
-        height: 5%;
-        padding: 5vh 4vw;
+        /* background-color: lightblue; */
+        /* border-radius: 15px; */
+        border: none;
+        font-size: clamp(1rem, 0.9773rem + 0.3636vw, 1.25rem);
+        height: max-content;
+        padding: 0.5vh 4vw;
         align-items: center;
         width: 100%;
-        border-bottom: 2px solid rgba(128, 128, 128, 0.233);
         display: flex;
         justify-content: space-between;
     }
@@ -270,16 +286,12 @@ align-self:flex-end;
         flex-direction: column;
         gap: 2vh;
         overflow-x: hidden;
-        height: 74%;
+        height: 70%;
         background-color: #F6F8FC;
     }
-    #sendmsg-btn{
-width: 15%;
-
-}
 #block-btn{
 
-    padding: 8px;
+    padding: 10px;
 font-size: 10px;
 
 }
@@ -302,24 +314,6 @@ padding: 0vh 1.5vw;
     display: flex;
  height: 10%;
 }
-.other-msg{
-    
-    height: auto;
-
-    /* padding-left: 50%; */
-    /* margin-left: 100px; */
-    margin: 0;
- /* background-color: aqua; */
-    flex-direction: row-reverse;
-align-self:flex-end;
-    gap: 10px;
-    align-items: flex-start;
-    display: flex;min-width: max-content;
-    max-width: 90%;
-    height: auto;
-    padding: 10px;
-    border-radius: 12px;
-}
 #name-status{
     justify-content: center;
        display: flex;
@@ -337,4 +331,48 @@ align-self:flex-end;
     padding: 0;
        margin: 0;
    }
+   #msginput{
+    background-color:whitesmoke;
+
+    color: black;
+    border-radius: 10px;
+    border: none;
+    width: 70%;
+    padding-left: 10px;
+    padding: 10px;
+}
+#emoji-container{
+    width:100%;
+    position: absolute;
+    bottom: 50px;
+    right: 300px;
+}
+#new-message-box{
+    justify-content: space-around;
+    gap: 1vw;
+ 
+    padding: 0px;
+    margin: auto;
+    align-items: center;
+    display: flex;
+
+    height: 15%;
+}
+#msginput{
+    background-color: #eff4ff;
+   
+    color: black;
+    border-radius: 10px;
+    border: none;
+    width: 90%;
+    padding-left: 10px;
+    padding: 15px;
+}
+#msg-type{
+    align-items: center;
+    justify-content: space-around;
+    height: 80%;
+    width: 80%;
+    display: flex;
+}
 }

@@ -1,4 +1,6 @@
 #list{
+    background-color: #105ef3;
+
     width: 30%;
     height: 100%;
 }
@@ -6,6 +8,8 @@
     #list{
         width: 100%;
         height: 30%;
+        border-top-left-radius: 25px;
+border-top-right-radius: 25px;        
     }
 
 

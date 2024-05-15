@@ -17,7 +17,7 @@ import { useChatStore } from "../libraries/chatStore";
 import avatar from "../List/UserInfo/Images/avatar.png";
 
 const Chat = () => {
-  const {mobileViewChat,setMobileViewChat} = useState(false)
+  const { mobileViewChat, setMobileViewChat } = useState(false);
   const { currentUser } = useUserStore();
   const [open, setOpen] = useState(false);
   const [chats, setChats] = useState("");
@@ -31,7 +31,7 @@ const Chat = () => {
   const handleimage = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-  
+
     try {
       const imageURL = await upload(file);
       setImage({
@@ -44,8 +44,6 @@ const Chat = () => {
       toast.error("Error handling image:", error);
     }
   };
-  
-  
 
   const { chatId, user, isCurrentUserBlocked, changeBlock, isRecieverBlocked } =
     useChatStore();
@@ -132,7 +130,6 @@ const Chat = () => {
       url: "",
     });
     setNewMessage("");
-
   };
 
   return (
@@ -157,9 +154,8 @@ const Chat = () => {
       </div>
       <div id="whole-chat">
         {isCurrentUserBlocked || isRecieverBlocked ? (
-          
           <div id="blockeddiv">
-           <h2>{isCurrentUserBlocked ? "You're Blocked!" : "Unblock User"}</h2>
+            <h2>{isCurrentUserBlocked ? "You're Blocked!" : "Unblock User"}</h2>
           </div>
         ) : (
           !blockedStatus &&
@@ -187,7 +183,6 @@ const Chat = () => {
                 }
               >
                 {message.text && <p>{message.text}</p>}
-
               </div>
             </div>
           ))
@@ -198,7 +193,7 @@ const Chat = () => {
       <form id="new-message-box" type="submit" onSubmit={handleSendMessage}>
         <div id="msg-type">
           <div id="icons-box-3">
-            <label htmlFor="file" >
+            <label htmlFor="file">
               <i className="ri-image-line"></i>
             </label>
             <input
@@ -238,7 +233,7 @@ const Chat = () => {
           id="sendmsg-btn"
           disabled={isCurrentUserBlocked || isRecieverBlocked}
         >
-          Send
+          <i className="ri-send-plane-2-line"></i>
         </button>
       </form>
     </div>
