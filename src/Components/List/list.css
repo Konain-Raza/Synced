@@ -1,5 +1,12 @@
 #list{
     width: 30%;
     height: 100%;
-    background-color: palevioletred;
 }
+@media only screen and (max-width: 768px) {
+    #list{
+        width: 100%;
+        height: 30%;
+    }
+
+
+  }

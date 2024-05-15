@@ -1,12 +1,13 @@
 #userinfo{
-    background-color: white;
+    background-color: #105ef3;
     width: 100%;
-    height: 15%;
+    height: max-content;
     display: flex;
     justify-content: space-between;
-    padding: 11px;
+    padding: 16px;
     align-items: center;
-    border-right: 1px solid lightgray;
+    color: white;
+    border: none;
 
 }
 
@@ -23,14 +24,17 @@
     margin: 0;
     padding: 0;
 font-size: 2rem;
+font-weight: 1000;
 
 }
 
 #name>img{
+    border-radius: 50%;
+    object-fit: cover;
     margin: 0;
     padding: 0;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
 }
 #icons-box{
     display: flex;
@@ -51,5 +55,16 @@ font-size: 2rem;
 }
 #icons-box>i{
     font-size: 2rem;
-    color: black;
+    
 }
+@media only screen and (max-width: 768px) {
+    #name>img{
+ 
+        width: 50px;
+        height: 50px;
+    }
+    #userinfo{
+        padding: 10px;
+        height: 40%;
+    }
+  }

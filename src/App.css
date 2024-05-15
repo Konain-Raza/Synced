@@ -2,7 +2,7 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100vw;
-  
+background-color: #F6F6F6;
   height: 100vh;
 }
 @font-face {
@@ -14,18 +14,18 @@ html, body {
 width: 100%;
 height: 100%;
 display: flex;
-align-items: center;
+align-items: center; 
 justify-content: center;
 font-family: gilroy;
  
 }
 #main{
 
-background-color: #F6F6F6;
 display: flex;
 justify-content: center;
 align-items: center;
   width: 100%;
+  max-width: max-content;
   height:100%;
 }
 
@@ -47,7 +47,9 @@ align-items: center;
   /* border: 1px solid rgba(0, 0, 0, 0.719); */
   border-radius:10px;
   border: none;
-  width:  clamp(9.375rem, 7.5rem + 15vw, 18.75rem);
+  width: clamp(15rem, 12.5rem + 13.3333vw, 20rem);
+  
+  /* width:  clamp(9.375rem, 4.6875rem + 25vw, 18.75rem); */
   padding: 20px;
   color: grey;
   font-weight: bold;
@@ -94,7 +96,6 @@ align-items: center;
 }
 
 #hero{
-  position: relative;
 gap: 5vw;
   width: 100%;
   display: flex;
@@ -111,9 +112,9 @@ gap: 5vw;
 
 }
 #blur-circle{
-  opacity: 0.5;
-  bottom: 0;
-  z-index: 0;
+  opacity: 0.4;
+  bottom: 18%;
+  z-index: 10;
   position: absolute;
   width: 300px;
   height: 300px;
@@ -127,32 +128,42 @@ gap: 5vw;
 #hero-content{
   font-weight: 500;
   z-index: 40;
-  /* background-color: aqua; */
   display: flex;  
   flex-direction: column;
-  /* align-items: center; */
+  gap: 0vw;
   text-align: left;
-  /* justify-content: center; */
-  margin-top: -10vh;
+  margin-top: 15vh;
   justify-content: center;
   padding-left: 2%;
+  max-height: max-content;
   height: 100%;
-  /* padding: 10px; */
-  width: 40%;
+  width: 60%;
 }
+#pwithimg{
+  position: relative;
+  width: 110%;
+  height: 90%;
+  display: flex;
+  gap: 1vw;
+}
+#pwithimg>p{
+  z-index: 100;
 
-#hero-image{
-  /* background-color: red; */
-  position: absolute;
-  /* top: 0; */
+  width: 50%;
+  height: max-content;
+  z-index: 100;
+font-size: clamp(0.9375rem, 0.5469rem + 1.25vw, 1.25rem);
+  
+}
+#pwithimg>img{
+  z-index: 100;
+
   rotate: -10deg;
-  left: 32%;
-  bottom: 3%;
-  width: 25rem;
-  /* animation-name: girnelaga; */
+  width: 50%;
+  height: max-content;
+  object-fit: cover;
   animation-duration: 1s;
   animation-timing-function:ease-out;
-  /* animation-iteration-count: infinite; */
   
 }
 @keyframes girnelaga{
@@ -184,26 +195,6 @@ padding-bottom: 15px;
   /* background-color: aqua; */
 }
 
-#hero-content>p{
-  z-index: 100;
-  /* width: 10%; */
-  margin: 0;
-  
-  font-weight: 50;
-
-  font-size: clamp(0.625rem, 0.5rem + 1vw, 1.25rem);
-  /* background-color: aqua; */
-}
-
-#hero-form{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* background-color: green; */
-  width: 40%;
-  height: 95%;
-  
-}
 
 #signup{
   height: 100%;
@@ -216,4 +207,294 @@ padding-bottom: 15px;
   color: black;
   background-color: yellow;
 
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 100px ) {
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+  }
+  #main{
+    width: 100%;
+    
+  }
+  html,body{
+    overflow-x: hidden;
+    margin: 0vw;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  #blur-circle{
+    opacity: 0.2;
+    left: 25%;
+    bottom: 18%;
+  }
+  #main{
+    width: 100%;
+  }
+.inputs{
+  width: 100%;
+}
+  #hero{
+    width: 100%;
+    flex-direction: column;
+    /* background-color: #4461F2; */
+    min-height: 100%;
+    gap: 10vh;
+    padding: 2px;
+    max-height: max-content;
+  }
+  #hero-content{
+    margin-top: 10vh;
+    /* background-color: aqua; */
+    width: 90%;
+  }
+  #pwithimg{
+    /* background-color: pink; */
+      gap: 0vw;
+      height: 85%;
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      width: 100%;
+
+    }
+    #pwithimg>p{
+      width: 100%;
+      height: max-content;
+      z-index: 100;
+      font-size: 15px;
+    }
+    #pwithimg>img{
+      /* object-fit: contain; */
+      width: 95%;
+      /* height: max-content;  */
+      animation-name: girnelaga;
+      animation-duration: 1s;
+      animation-timing-function:ease-out;
+      
+    }
+}
+@media only screen and (min-width: 300px ) {
+  .inputs{
+    background-color: #EAF0F7;
+    color: black;
+    /* border: 1px solid rgba(0, 0, 0, 0.719); */
+    border-radius:10px;
+    border: none;
+    width: clamp(15rem, 12.5rem + 13.3333vw, 20rem);
+    
+    /* width:  clamp(9.375rem, 4.6875rem + 25vw, 18.75rem); */
+    padding: 20px;
+    color: grey;
+    font-weight: bold;
+   }
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+  }
+  #main{
+    width: 100%;
+    
+  }
+  html,body{
+    overflow-x: hidden;
+    margin: 0vw;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  #blur-circle{
+    opacity: 0.2;
+    left: 25%;
+    bottom: 18%;
+  }
+  #main{
+    width: 100%;
+  }
+
+  #hero{
+    width: 100%;
+  padding: 50px;
+
+    flex-direction: column;
+    /* background-color: #4461F2; */
+    min-height: 100%;
+    gap: 5vh;
+    max-height: max-content;
+  }
+  #hero-content{
+    margin-top: 10vh;
+    /* background-color: aqua; */
+    width: 90%;
+  }
+  #pwithimg{
+    /* background-color: pink; */
+      gap: 0vw;
+      height: 85%;
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      width: 100%;
+
+    }
+    #pwithimg>p{
+      width: 100%;
+      height: max-content;
+      z-index: 100;
+      font-size: 18px;
+    }
+    #pwithimg>img{
+      object-fit: contain;
+      width: 95%;
+      height: max-content;
+      animation-name: girnelaga;
+      animation-duration: 1s;
+      animation-timing-function:ease-out;
+      
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+ 
+  #blur-circle{
+    opacity: 0.27;
+    left: 25%;
+    bottom: 18%;
+  }
+  #pwithimg{
+    /* background-color: pink; */
+      gap: 0vw;
+      height: 80%;
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      width: 100%;
+    }
+    #pwithimg>p{
+      width: 100%;
+      height: max-content;
+      z-index: 100;
+      font-size: 18px;
+    }
+    #pwithimg>img{
+      width: 70%;
+      animation-name: girnelaga;
+      animation-duration: 1s;
+      animation-timing-function:ease-out;
+      
+    }
+
+    #hero-form{
+
+    }
+ 
+  
+}
+
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  #hero{
+    flex-direction: row;
+  }
+#hero-content{
+  margin-top: 10vh;
+}
+  #pwithimg{
+  /* background-color: pink; */
+    gap: 0vw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
+  #pwithimg>p{
+    width: 100%;
+    height: max-content;
+    z-index: 100;
+    /* font-size: 18px; */
+  }
+  #pwithimg>img{
+    width: 80%;
+    animation-name: girnelaga;
+    animation-duration: 1s;
+    animation-timing-function:ease-out;
+    
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  
+  #hero-content{
+    margin-top: 10vh;
+  }
+  #pwithimg{
+    gap: 0vw;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
+  #pwithimg>p{
+    width: 100%;
+    display: flex;
+    /* background-color: red; */
+    z-index: 100;
+    /* font-size: 18px; */
+  }
+  #pwithimg>img{
+  
+    width:65%;
+    animation-name: girnelaga;
+    animation-duration: 1s;
+    animation-timing-function:ease-out;
+    
+  }
+}
+
+/* @media only screen and (max-width: px) {
+  #pwithimg>img{
+  
+    width: 80%;
+    animation-name: girnelaga;
+    animation-duration: 1s;
+    animation-timing-function:ease-out;
+    
+  }
+} */
+
+@media only screen and (min-width: 1000px) {
+  html,body{
+    padding: 0;
+    overflow-y: hidden;
+  } 
+  #hero{
+    margin-top: 1vh;
+  }
+  #hero-content{
+  margin-top: 15vh;
+  }
+  #pwithimg{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  #pwithimg>img{
+  
+    width:55%;
+    animation-name: girnelaga;
+    animation-duration: 1s;
+    animation-timing-function:ease-out;
+    
+  }
 }

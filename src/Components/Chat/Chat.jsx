@@ -17,6 +17,7 @@ import { useChatStore } from "../libraries/chatStore";
 import avatar from "../List/UserInfo/Images/avatar.png";
 
 const Chat = () => {
+  const {mobileViewChat,setMobileViewChat} = useState(false)
   const { currentUser } = useUserStore();
   const [open, setOpen] = useState(false);
   const [chats, setChats] = useState("");
