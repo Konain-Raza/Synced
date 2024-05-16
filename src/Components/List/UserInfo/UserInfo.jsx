@@ -24,6 +24,9 @@ const UserInfo = ({ currentUser }) => {
     setChatUser(newUserData);
   };
 
+  if (!currentUser) {
+    return <div>Loading...</div>; // or handle the error appropriately
+  }
   return (
     <div id="userinfo">
       <div className="user">

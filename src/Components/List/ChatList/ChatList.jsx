@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./chatlist.css";
 import avatar from "../UserInfo/Images/avatar.png";
+import notificationSound from "../../../assets/Tunes/notification.mp3";
 import AddUser from "../../AddUser/AddUser";
 import useUserStore from "../../libraries/userStore";
 import { doc, onSnapshot, getDoc, updateDoc } from "firebase/firestore"; // Import getDoc
@@ -15,6 +16,7 @@ const ChatList = () => {
   const { changeChat, isCurrentUserBlocked, isRecieverBlocked } =
     useChatStore(); // Destructure changeChat, isCurrentUserBlocked, isRecieverBlocked from useChatStore
   const [input, setInput] = useState("");
+  const notificationAudio = new Audio(notificationSound);
 
   const handleSelectChat = async (chat) => {
     // Change the parameter name from 'chats' to 'chat'
@@ -48,6 +50,7 @@ const ChatList = () => {
   useEffect(() => {
     const fetchChats = async () => {
       try {
+        if (!currentUser) return; // Exit if currentUser is null
         if (currentUser) {
           const docRef = doc(db, "userchats", currentUser.id);
           const docSnap = await getDoc(docRef);
@@ -87,7 +90,7 @@ const ChatList = () => {
     };
 
     fetchChats(); // Fetch initial chat data
-
+    console.log(currentUser);
     const unsubscribe = onSnapshot(
       doc(db, "userchats", currentUser.id),
       (snapshot) => {
@@ -122,16 +125,39 @@ const ChatList = () => {
       unsubscribe(); // Unsubscribe from the snapshot listener when the component unmounts
     };
   }, [currentUser]);
+
+  // Inside your component:
+
+  // Create a ref to store the previous filterChats
+  const previousFilterChatsRef = useRef([]);
+
+  // Use the ref to compare the previous filterChats with the current filterChats
   useEffect(() => {
-    filterChats.forEach((chat) => {
-      if (!chat.isSeen) {
-        toast.success(`New message from ${chat.user.username}`);
-      }
-    });
-  }, []);
+    // Compare the current filterChats with the previousFilterChats
+    const newMessages = filterChats.filter(
+      (chat) =>
+        !previousFilterChatsRef.current.some(
+          (prevChat) =>
+            prevChat.chatId === chat.chatId && prevChat.isSeen === chat.isSeen
+        )
+    );
 
+    // If there are new unseen messages, play the notification sound
+    if (newMessages.length > 0) {
+      toast.success(`New message from ${newMessages[0].user.username}`);
+      const sound = new Audio(notificationAudio);
+      sound.play();
+    }
 
-    return (
+    // Update the previousFilterChatsRef with the current filterChats
+    previousFilterChatsRef.current = filterChats;
+  }, [filterChats, notificationAudio]);
+
+  if (!currentUser) {
+    return <div>Loading...</div>; // Render a loading indicator or a placeholder
+  }
+
+  return (
     <div id="chatlist">
       <div id="searchbar">
         <div id="search-input">
@@ -157,9 +183,8 @@ const ChatList = () => {
             onClick={() => handleSelectChat(chat)}
             style={{
               backgroundColor: chat.isSeen ? "white" : "#105ef3",
-              color: chat.isSeen ? "black" : "white"
+              color: chat.isSeen ? "black" : "white",
             }}
-            
           >
             <img src={chat.user.avatar || avatar} alt="user-image" />
             <div id="name-msg">

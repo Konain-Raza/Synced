@@ -64,15 +64,12 @@
 }
 
 #current-chatuserinfo{
-    padding: 1vh 0.7vw;
+    padding: 2vh 0.7vw;
     align-items: center;
     width: 100%;
-    border-bottom-left-radius: 40px;
-    border-bottom-right-radius: 40px;
-
+    border-radius: 40px;
     height: 15%;
     background-color: white;
-    /* border-bottom: 2px solid rgba(128, 128, 128, 0.233); */
     display: flex;
     justify-content: space-between;
 }
@@ -121,7 +118,7 @@ align-items: center;
 }
 #whole-chat{
     margin: 0;
-    padding: 0vh 1.5vw;
+    padding: 2vh 1.5vw;
     overflow-y: auto;
     width: 100% !important;
     display: flex;
@@ -129,18 +126,18 @@ align-items: center;
     gap: 1vh;
     overflow-x: hidden;
  
-    height: 73%;
-    background-color:#f3f2ed;
+    height: 75%;
+    background-color: #f3f2ed;
     /* background-color: #F6F8FC; */
 }
 #new-message-box{
-padding: 0vh 1.5vw;
+padding: 1vh 1.5vw;
     justify-content: space-between;
     gap: 1vw;
     align-items: center;
     display: flex;
   width: 100%;
-    height: 13%;
+    height: 10%;
 }
 #icons-box-3>label>i{
     font-size: clamp(1rem, 0.9091rem + 1.4545vw, 2rem);
@@ -264,7 +261,7 @@ flex-direction: column;
         border: none;
         font-size: clamp(1rem, 0.9773rem + 0.3636vw, 1.25rem);
         height: max-content;
-        padding: 0.5vh 4vw;
+        padding: 1vh 4vw;
         align-items: center;
         width: 100%;
         display: flex;

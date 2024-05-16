@@ -475,7 +475,7 @@ padding-bottom: 15px;
 @media only screen and (min-width: 1000px) {
   html,body{
     padding: 0;
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
   } 
   #hero{
     margin-top: 1vh;

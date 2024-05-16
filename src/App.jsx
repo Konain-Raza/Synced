@@ -15,7 +15,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { auth, db, provider } from "./Components/firebase-config";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import CurrentUserPage from "./Components/CurrentUser/CurrentUser";
 import { GoogleAuthProvider } from "firebase/auth/cordova";
 
@@ -42,12 +42,34 @@ function App() {
   const handleGoogleSignin = async (e) => {
     e.preventDefault();
     try {
-      // const auth = getAuth();
-      // const provider = new GoogleAuthProvider();
       const response = await signInWithPopup(auth, provider);
+      const user = response.user;
+console.log(user)
       cookies.set("auth-token", response._tokenResponse.refreshToken);
 
-      toast.success("Successfully Logged In");
+      // Check if the user already exists in Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (!userDoc.exists()) {
+        // If the user does not exist, add them to Firestore
+        await setDoc(userDocRef, {
+          username: user.displayName,
+          email: user.email,
+          id: user.uid,
+          blocked: [],
+          avatar: user.photoURL || avatar, // use default avatar if none provided
+        });
+
+        await setDoc(doc(db, "userchats", user.uid), {
+          chats: [],
+        });
+
+        toast.success("Successfully Logged In and User Data Stored");
+      } else {
+        toast.info("Successfully Logged In");
+      }
+
       setIsAuth(true);
     } catch (error) {
       toast.error(`${error}`);
@@ -130,19 +152,16 @@ function App() {
       <div id="main">
         <div id="hero">
           <div id="hero-content">
-           
             <h1>Synced</h1>
             <h5>Your Hub for Group Messaging 💬</h5>
             <div id="pwithimg">
               <p>
-            <div id="blur-circle"></div>
-
+                <div id="blur-circle"></div>
                 Connect and collaborate effortlessly with Synced Messaging.
                 Create public or private groups, chat in real-time, and stay
                 synchronized with your teams, friends, and communities. 🚀
               </p>
               <img src={heroimg} alt="hero image" id="hero-image" />
-
             </div>
           </div>
           <div id="hero-form">

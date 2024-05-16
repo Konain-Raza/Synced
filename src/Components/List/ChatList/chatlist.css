@@ -59,14 +59,14 @@ textarea:focus, input:focus{
 /* x */
 #joined-users{
     padding: 2vh 0vw;
-align-items: flex-start;
     background-color: #f6f8fc !important;
     width: 100%;    
-    height: 85%;
+    /* height: 85%; */
     gap: 1.5vh;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    max-height: 80%;
 }
 
 
@@ -143,17 +143,11 @@ align-items: flex-start;
     
     }
     #joined-users{
-        /* background-color: green !important; */
         margin: auto;
-        /* margin-top: 1vh; */
         padding: 1vh 2vw;
-        align-items: center;
-        /* padding: 1vh 2vw; */
-        justify-content:flex-start;
     
-        background-color: white !important;
         width: 100%;    
-        height: 70%;
+        height: 90%;
         margin: auto;
 /* align-self: center; */
         gap: 2vh;
@@ -161,6 +155,7 @@ align-items: flex-start;
         flex-direction: row;
         overflow-x: auto;
         overflow-y: hidden;
+        
     }
     #searchbar{
 
