@@ -1,6 +1,6 @@
 #chatlist{
-border-top-left-radius: 20px;
-border-top-right-radius: 20px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
 
     padding: 2vh 0vw;
     border-top: 1px solid lightgray;
@@ -59,10 +59,8 @@ textarea:focus, input:focus{
 /* x */
 #joined-users{
     padding: 2vh 0vw;
-    align-items: center;
+align-items: flex-start;
     background-color: #f6f8fc !important;
-
-    /* background-color: #f3f7fb; */
     width: 100%;    
     height: 85%;
     gap: 1.5vh;
@@ -134,19 +132,24 @@ textarea:focus, input:focus{
         width: 100%;
         gap: 1vh;
         border-radius: 20px;
-        height: 65%;
+        height: 70%;
         border-bottom:none;
-     
+     justify-content: center;
+     align-items: center;
+     border-top-left-radius: 40px;
+     border-top-right-radius: 40px;
+
 
     
     }
     #joined-users{
-        /* margin: auto; */
-        margin-top: 1vh;
+        /* background-color: green !important; */
+        margin: auto;
+        /* margin-top: 1vh; */
         padding: 1vh 2vw;
         align-items: center;
         /* padding: 1vh 2vw; */
-        /* justify-content:center; */
+        justify-content:flex-start;
     
         background-color: white !important;
         width: 100%;    
@@ -164,7 +167,7 @@ textarea:focus, input:focus{
         margin: 0;
  height: 35%;
  border: none;
- /* margin-top: 1vh; */
+ margin-top: 2vh;
  align-items: center ;
     display: flex;
     justify-content: center;
@@ -178,7 +181,7 @@ align-items: center;
         height: 95%;
         padding: 1.1%;
         border-radius: 10px;
-        width: 70%;
+       
     }
     
     #search-input>input{
@@ -197,8 +200,8 @@ align-items: center;
     .chat-users>img{
         border-radius: 50%;
         object-fit: cover;
-        width: 50px !important;
-        height: 50px !important;
+        width: 70px !important;
+        height: 70px !important;    
     }
     .chat-users{
     box-shadow: none;
@@ -232,9 +235,14 @@ align-items: center;
   display: none;
     }
     #add-button{
+        font-size: 1.5rem;
         background-color: #EAF0F7;
-    
-        padding: 6px;
+    width: 7%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+        height: 90%;
+        
         border-radius: 10px;
         cursor: pointer;
     }

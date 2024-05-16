@@ -56,13 +56,14 @@ font-weight: 1000;
     gap: 1.5vw;
 }
 #icons-box>i{
-    font-size: clamp(1rem, 0.9091rem + 1.4545vw, 2rem);
+    font-size: clamp(2rem, 2.3687rem + -2.95vw, 0.15625rem);
     
 }
 @media only screen and (max-width: 768px) {
     #name>h2{
+        font-size: clamp(1.875rem, 1.85rem + 0.2vw, 2rem);
         /* font-size: clamp(1rem, 0.9773rem + 0.3636vw, 1.25rem); */
-        font-size: clamp(1rem, 0.9489rem + 0.8182vw, 1.5625rem);
+        /* font-size: clamp(1rem, 0.9489rem + 0.8182vw, 1.5625rem); */
     }
     #name>img{
 

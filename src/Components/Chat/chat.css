@@ -67,8 +67,8 @@
     padding: 1vh 0.7vw;
     align-items: center;
     width: 100%;
-    border-bottom-left-radius: 25px;
-    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
 
     height: 15%;
     background-color: white;
@@ -129,7 +129,7 @@ align-items: center;
     gap: 1vh;
     overflow-x: hidden;
  
-    height: 72%;
+    height: 73%;
     background-color:#f3f2ed;
     /* background-color: #F6F8FC; */
 }
@@ -211,7 +211,7 @@ font-weight: 1000;
     width: 100%;
     height: 100%;
 
-    background-color: red !important;
+    /* background-color: red !important; */
     justify-content: center;
     align-items: center;
 display: flex;
@@ -286,7 +286,7 @@ flex-direction: column;
         flex-direction: column;
         gap: 2vh;
         overflow-x: hidden;
-        height: 70%;
+        height: 75%;
         background-color: #F6F8FC;
     }
 #block-btn{
@@ -297,8 +297,7 @@ font-size: 10px;
 }
 #blockeddiv{
     width: 100%;
-    height: 50%;
-    background-color: red !important;
+    height: 100%;
     justify-content: center;
     align-items: center;
 display: flex;
@@ -350,7 +349,6 @@ padding: 0vh 1.5vw;
 #new-message-box{
     justify-content: space-around;
     gap: 1vw;
- 
     padding: 0px;
     margin: auto;
     align-items: center;

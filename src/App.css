@@ -323,7 +323,7 @@ padding-bottom: 15px;
 
   #hero{
     width: 100%;
-  padding: 50px;
+  padding: 10px;
 
     flex-direction: column;
     /* background-color: #4461F2; */
@@ -394,9 +394,7 @@ padding-bottom: 15px;
       
     }
 
-    #hero-form{
 
-    }
  
   
 }
@@ -406,6 +404,7 @@ padding-bottom: 15px;
 @media only screen and (min-width: 768px) {
   #hero{
     flex-direction: row;
+    padding: 50px;
   }
 #hero-content{
   margin-top: 10vh;
@@ -480,6 +479,7 @@ padding-bottom: 15px;
   } 
   #hero{
     margin-top: 1vh;
+    padding: 50px;
   }
   #hero-content{
   margin-top: 15vh;
@@ -491,7 +491,7 @@ padding-bottom: 15px;
   }
   #pwithimg>img{
   
-    width:55%;
+    width:50%;
     animation-name: girnelaga;
     animation-duration: 1s;
     animation-timing-function:ease-out;

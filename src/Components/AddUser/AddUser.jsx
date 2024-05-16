@@ -60,6 +60,7 @@ const AddUser = () => {
   
 
   const handleSearchuser = async (e) => {
+    
     e.preventDefault();
     const formData = new FormData(e.target);
     const username = formData.get("username");
@@ -68,6 +69,7 @@ const AddUser = () => {
       const q = query(userRef, where("username", "==", username));
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
+        console.log(users)
         setUsers(querySnapshot.docs.map(doc => doc.data())); // Update state with array of user data
       }
     } catch (error) {

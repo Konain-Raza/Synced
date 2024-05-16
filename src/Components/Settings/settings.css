@@ -4,10 +4,11 @@
     height: max-content;
     padding: 40px;
     /* min-width: 30%; */
-    width: 40%;
+    width: max-content;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin: auto;
     gap: 10px;
     background-color: white;
     left: 0;
@@ -17,6 +18,7 @@
     bottom: 0;
     margin: auto;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    color: black;
 
 }
 #settingsBox>button{
@@ -28,6 +30,7 @@ background-color: blue;
 }
 #settingsBox>input:first-child{
     background-color: #EAF0F7;
+    width:  clamp(7.5rem, 5.25rem + 18vw, 18.75rem);
     
 padding: 17px;
 border-radius: 7px;
@@ -38,8 +41,8 @@ border: none;
     background-color: #EAF0F7;
 
     margin: 0 auto;
+    width:  clamp(7.5rem, 5.25rem + 18vw, 18.75rem);
 
-    width: 90%;
     padding: 17px;
     border-radius: 7px;
     border: none;
@@ -51,7 +54,9 @@ border: none;
     align-items: center;
     gap: 10px;
 }
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 300px) {
 
-
+    #settingsBox{
+        padding: 20px;
+    }
 }

@@ -39,7 +39,7 @@ const Chat = () => {
         url: imageURL,
       });
       // setNewMessage(""); // Clear the message input
-      // handleSendMessage(); // Trigger handleSendMessage after image upload
+      handleSendMessage(); // Trigger handleSendMessage after image upload
     } catch (error) {
       toast.error("Error handling image:", error);
     }

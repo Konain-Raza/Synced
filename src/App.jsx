@@ -130,7 +130,7 @@ function App() {
       <div id="main">
         <div id="hero">
           <div id="hero-content">
-            {/* <div id="blur-circle"></div> */}
+           
             <h1>Synced</h1>
             <h5>Your Hub for Group Messaging 💬</h5>
             <div id="pwithimg">

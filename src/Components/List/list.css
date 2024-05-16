@@ -7,9 +7,9 @@
 @media only screen and (max-width: 768px) {
     #list{
         width: 100%;
-        height: 30%;
-        border-top-left-radius: 25px;
-border-top-right-radius: 25px;        
+        height: 35%;
+        border-top-left-radius: 40px;
+        border-top-right-radius: 40px;
     }
 
 

@@ -28,7 +28,8 @@ const UserInfo = ({ currentUser }) => {
     <div id="userinfo">
       <div className="user">
         <div id="name">
-          <img src={chatUser.avatar} alt="user-image" />
+          <img src={chatUser.avatar || avatar} alt="user-image" />
+
           <h2>{chatUser.username}</h2>
         </div>
         <div id="icons-box">
