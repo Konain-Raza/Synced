@@ -67,7 +67,10 @@
     padding: 2vh 0.7vw;
     align-items: center;
     width: 100%;
-    border-radius: 40px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+
+    /* border-radius: 40px; */
     height: 15%;
     background-color: white;
     display: flex;
@@ -252,7 +255,7 @@ flex-direction: column;
 
     #chat{
         width: 100%;
-        height: 70%;
+        height: 80%;
         background-color: #F5F6F1 !important;
     }
     #current-chatuserinfo{
@@ -261,7 +264,7 @@ flex-direction: column;
         border: none;
         font-size: clamp(1rem, 0.9773rem + 0.3636vw, 1.25rem);
         height: max-content;
-        padding: 1vh 4vw;
+        padding: 2vh 4vw;
         align-items: center;
         width: 100%;
         display: flex;

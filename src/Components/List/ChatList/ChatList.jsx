@@ -90,7 +90,6 @@ const ChatList = () => {
     };
 
     fetchChats(); // Fetch initial chat data
-    console.log(currentUser);
     const unsubscribe = onSnapshot(
       doc(db, "userchats", currentUser.id),
       (snapshot) => {
@@ -132,8 +131,27 @@ const ChatList = () => {
   const previousFilterChatsRef = useRef([]);
 
   // Use the ref to compare the previous filterChats with the current filterChats
+  // useEffect(() => {
+  //   // Compare the current filterChats with the previousFilterChats
+  //   const newMessages = filterChats.filter(
+  //     (chat) =>
+  //       !previousFilterChatsRef.current.some(
+  //         (prevChat) =>
+  //           prevChat.chatId === chat.chatId && prevChat.isSeen === chat.isSeen
+  //       )
+  //   );
+
+  //   // If there are new unseen messages, play the notification sound
+  //   if (newMessages.length > 0) {
+  //     toast.success(`New message from ${newMessages[0].user.username}`);
+  //     const sound = new Audio(notificationAudio);
+  //     sound.play();
+  //   }
+
+  //   // Update the previousFilterChatsRef with the current filterChats
+  //   previousFilterChatsRef.current = filterChats;
+  // }, [filterChats, notificationAudio]);
   useEffect(() => {
-    // Compare the current filterChats with the previousFilterChats
     const newMessages = filterChats.filter(
       (chat) =>
         !previousFilterChatsRef.current.some(
@@ -142,17 +160,18 @@ const ChatList = () => {
         )
     );
 
-    // If there are new unseen messages, play the notification sound
     if (newMessages.length > 0) {
       toast.success(`New message from ${newMessages[0].user.username}`);
-      const sound = new Audio(notificationAudio);
+      const sound = new Audio(notificationSound);
       sound.play();
     }
 
-    // Update the previousFilterChatsRef with the current filterChats
     previousFilterChatsRef.current = filterChats;
-  }, [filterChats, notificationAudio]);
+  }, [filterChats]);
 
+  if (!currentUser) {
+    return <div>Loading...</div>;
+  }
   if (!currentUser) {
     return <div>Loading...</div>; // Render a loading indicator or a placeholder
   }

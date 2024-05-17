@@ -14,6 +14,8 @@ import {
   doc,
 } from "firebase/firestore";
 import { arrayUnion } from "firebase/firestore";
+import { ToastContainer, toast } from "react-toastify";
+
 import useUserStore from "../libraries/userStore";
 
 const AddUser = () => {
@@ -35,7 +37,7 @@ const AddUser = () => {
       const userExists = currentUserChats.some(chat => chat.recieverId === users[0].id);
   
       if (userExists) {
-        console.log("User is already in the chat list");
+        toast.error("User is already in the chat list");
         return;
       }
   
@@ -66,9 +68,9 @@ const AddUser = () => {
         }),
       });
   
-      console.log(newChatRef.id);
+    
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
   
@@ -122,11 +124,10 @@ const AddUser = () => {
       const q = query(userRef, where("username", "==", username));
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
-        console.log(users)
         setUsers(querySnapshot.docs.map(doc => doc.data())); // Update state with array of user data
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
@@ -151,6 +152,18 @@ const AddUser = () => {
           ))}
         </div>
       )}
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
     </div>
   );
 };

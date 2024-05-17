@@ -131,9 +131,9 @@ textarea:focus, input:focus{
         background-color: white !important;
         border-top:none;
         width: 100%;
-        gap: 1vh;
+        gap: 0vh;
         border-radius: 20px;
-        height: 80%;
+        height: 70%;
         border-bottom:none;
      justify-content: center;
      align-items: center;
