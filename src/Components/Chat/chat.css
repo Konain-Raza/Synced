@@ -283,7 +283,7 @@ flex-direction: column;
         flex-direction: column;
         gap: 2vh;
         overflow-x: hidden;
-        height: 75%;
+        height: 70%;
         background-color: #F6F8FC;
     }
 #block-btn{

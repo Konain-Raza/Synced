@@ -4,84 +4,116 @@ import { db } from "../firebase-config";
 import avatar from "../List/UserInfo/Images/avatar.png";
 import {
   collection,
-  doc,
-  setDoc,
-  serverTimestamp,
-  getDocs,
   query,
   where,
-} from "firebase/firestore"; // Import necessary Firestore functions
-import { ToastContainer, toast } from "react-toastify";
+  getDoc,
+  getDocs,
+  serverTimestamp,
+  updateDoc,
+  setDoc,
+  doc,
+} from "firebase/firestore";
+import { arrayUnion } from "firebase/firestore";
 import useUserStore from "../libraries/userStore";
 
 const AddUser = () => {
   const { currentUser } = useUserStore();
-  const [users, setUsers] = useState([]);
 
+  const [users, setUsers] = useState([]);
   const handleAddUser = async () => {
     if (!users.length) return; // Ensure users is not empty
-
+  
     const chatRef = collection(db, "chats");
-    const userChatsRef = collection(db, "userchats");
-
+    const UserchatsRef = collection(db, "userchats");
+  
     try {
-      // Assume the first user in the list is the one to be added (you can change this logic as needed)
-      const newUser = users[0];
-
-      // Check if the user already exists in the current user's chat list
-      const userChatQuery = query(
-        userChatsRef,
-        where("receiverId", "==", newUser.id)
-      );
-      const userChatSnapshot = await getDocs(userChatQuery);
-      if (!userChatSnapshot.empty) {
-        // User is already registered, show toast and return
-        toast.error("User is already registered.");
+      // Get the current user's chats
+      const currentUserChatsDoc = await getDoc(doc(UserchatsRef, currentUser.id));
+      const currentUserChats = currentUserChatsDoc.data()?.chats || [];
+  
+      // Check if the user is already in the current user's chat list
+      const userExists = currentUserChats.some(chat => chat.recieverId === users[0].id);
+  
+      if (userExists) {
+        console.log("User is already in the chat list");
         return;
       }
-
-      // Create a new chat document
+  
       const newChatRef = doc(chatRef);
       await setDoc(newChatRef, {
         createdAt: serverTimestamp(),
         messages: [],
       });
-
+  
       // Construct the chat object
       const chatObject = {
         chatId: newChatRef.id,
-        lastMessage: "",
-        receiverId: newUser.id,
+        lastmessage: "",
+        recieverId: currentUser.id,
         updatedAt: Date.now(),
       };
-
-      // Add chat object to current user's userchats collection
-      await setDoc(
-        doc(userChatsRef, `${currentUser.id}_${newUser.id}`),
-        chatObject
-      );
-
-      // Add chat object to the added user's userchats collection
-      await setDoc(doc(userChatsRef, `${newUser.id}_${currentUser.id}`), {
-        chatId: newChatRef.id,
-        lastMessage: "",
-        receiverId: currentUser.id,
-        updatedAt: Date.now(),
+  
+      // Update userchats for the user being added
+      await updateDoc(doc(UserchatsRef, users[0].id), {
+        chats: arrayUnion(chatObject),
       });
-
-      console.log(
-        "Chat successfully created and users added to each other's chat lists"
-      );
-
-      // Reset users state after adding user
-      setUsers([]);
+  
+      // Update userchats for the current user
+      await updateDoc(doc(UserchatsRef, currentUser.id), {
+        chats: arrayUnion({ 
+          ...chatObject,
+          recieverId: users[0].id, // Switch the sender and receiver
+        }),
+      });
+  
+      console.log(newChatRef.id);
     } catch (error) {
-      console.error("Error adding user: ", error);
-      toast.error("Error adding user.");
+      console.log(error);
     }
   };
+  
+  
+  // const handleAddUser = async () => {
+  //   if (!users.length) return; // Ensure users is not empty
+  //   const chatRef = collection(db, "chats");
+  //   const UserchatsRef = collection(db, "userchats");
+  //   try {
+  //     const newChatRef = doc(chatRef);
+  //     await setDoc(newChatRef, {
+  //       createdAt: serverTimestamp(),
+  //       messages: [],
+  //     });
+  
+  //     // Construct the chat object
+  //     const chatObject = {
+  //       chatId: newChatRef.id,
+  //       lastmessage: "",
+  //       recieverId: currentUser.id,
+  //       updatedAt: Date.now(),
+  //     };
+  
+  //     // Update userchats for the user being added
+  //     await updateDoc(doc(UserchatsRef, users[0].id), {
+  //       chats: arrayUnion(chatObject),
+  //     });
+  
+  //     // Update userchats for the current user
+  //     await updateDoc(doc(UserchatsRef, currentUser.id), {
+  //       chats: arrayUnion({ 
+  //         ...chatObject,
+  //         recieverId: users[0].id, // Switch the sender and receiver
+  //       }),
+  //     });
+  
+  //     console.log(newChatRef.id);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  
 
   const handleSearchuser = async (e) => {
+    
     e.preventDefault();
     const formData = new FormData(e.target);
     const username = formData.get("username");
@@ -90,16 +122,11 @@ const AddUser = () => {
       const q = query(userRef, where("username", "==", username));
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
-        setUsers(querySnapshot.docs.map((doc) => doc.data())); // Update state with array of user data
-      } else {
-        // No users found
-        setUsers([]);
-        toast.error("No users found.");
+        console.log(users)
+        setUsers(querySnapshot.docs.map(doc => doc.data())); // Update state with array of user data
       }
     } catch (error) {
       console.log(error);
-      // Handle error
-      toast.error("Error searching for users.");
     }
   };
 
@@ -124,18 +151,6 @@ const AddUser = () => {
           ))}
         </div>
       )}
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </div>
   );
 };

@@ -5,7 +5,7 @@
     padding: 2vh 0vw;
     border-top: 1px solid lightgray;
     width: 100%;
-    height: 87%;
+    height: 85%;
     background-color: #f6f8fc !important;
 }
 #searchbar{
@@ -59,7 +59,8 @@ textarea:focus, input:focus{
 /* x */
 #joined-users{
     padding: 2vh 0vw;
-    background-color: #f6f8fc !important;
+     background-color: #f6f8fc !important;
+
     width: 100%;    
     /* height: 85%; */
     gap: 1.5vh;
@@ -132,7 +133,7 @@ textarea:focus, input:focus{
         width: 100%;
         gap: 1vh;
         border-radius: 20px;
-        height: 70%;
+        height: 80%;
         border-bottom:none;
      justify-content: center;
      align-items: center;
@@ -143,16 +144,16 @@ textarea:focus, input:focus{
     
     }
     #joined-users{
-        margin: auto;
         padding: 1vh 2vw;
-    
+    background-color: white !important;
         width: 100%;    
-        height: 90%;
-        margin: auto;
-/* align-self: center; */
+        height: 70%;
+        margin: auto auto;
         gap: 2vh;
         display: flex;
         flex-direction: row;
+        justify-content: flex-start !important;
+        align-items: center !important;
         overflow-x: auto;
         overflow-y: hidden;
         
