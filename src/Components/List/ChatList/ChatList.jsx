@@ -176,24 +176,28 @@ const ChatList = () => {
       </div>
 
       <div id="joined-users">
-        {filterChats.map((chat) => (
-          <div
-            className="chat-users"
-            key={chat.chatId}
-            onClick={() => handleSelectChat(chat)}
-            style={{
-              backgroundColor: chat.isSeen ? "white" : "#105ef3",
-              color: chat.isSeen ? "black" : "white",
-            }}
-          >
-            <img src={chat.user.avatar || avatar} alt="user-image" />
-            <div id="name-msg">
-              <h1>{chat.user.username}</h1>
-              {!isCurrentUserBlocked ||
-                (!isRecieverBlocked && <p>{chat.lastMessage}</p>)}
+        {filterChats
+          .sort((a, b) => a.isSeen - b.isSeen)
+          .map((chat) => (
+            <div
+              className="chat-users"
+              key={chat.chatId}
+              onClick={() => handleSelectChat(chat)}
+              style={{
+                backgroundColor: chat.isSeen ? "white" : "#105ef3",
+                color: chat.isSeen ? "black" : "white",
+              }}
+            >
+              <img src={chat.user.avatar || avatar} alt="user-image" />
+              <div id="name-msg">
+                <h1>{chat.user.username}</h1>
+                {(!isCurrentUserBlocked || !isRecieverBlocked) && (
+                  <p>{chat.lastMessage}</p>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+
         <ToastContainer
           position="top-center"
           autoClose={3000}

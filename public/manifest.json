@@ -1,0 +1,23 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Synced",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Synced",
+  "start_url": "/lets-synced.vercel.app",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/assets/icon-Bo3y0jG9.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "description": "Chatting Application",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ]
+}
