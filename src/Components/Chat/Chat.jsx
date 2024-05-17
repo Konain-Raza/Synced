@@ -82,6 +82,7 @@ const Chat = () => {
   };
 
   const handleSendMessage = async (e) => {
+    setNewMessage("");
     e.preventDefault();
     if (!chatId || (!newmessage && !image.url)) {
       return; // Exit if chatId is undefined or null, and both newmessage and image are empty
