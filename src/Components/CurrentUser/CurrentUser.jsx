@@ -7,7 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
 import App from "../../App";
 import { useChatStore } from "../libraries/chatStore";
-  
+
 const CurrentUser = (props) => {
   const { chatId } = useChatStore();
   const { currentUser, fetchUserInfo } = useUserStore();
@@ -28,22 +28,27 @@ const CurrentUser = (props) => {
 
   // Render loading indicator if data is still loading
   if (isLoading) {
-    return  <div className="loader"></div> ;
+    return <div className="loader"></div>;
   }
 
   return (
     <div id="currentUser">
-      <List currentUser={currentUser}/>
-      {chatId ? <Chat currentUser={currentUser}/> : <div id="onboard">
-        <h1>Welcome to Synced 🌟</h1>
-        <p>
-
-Get started by connecting with others! Add them to your chats and let the conversations flow. Share images 📷, messages 💬, and more to stay connected and build meaningful connections. Let Synced be your platform for fostering friendships and creating memories that last a lifetime.</p>
-        
-        </div>}
+      <List currentUser={currentUser} />
+      {chatId ? (
+        <Chat currentUser={currentUser} />
+      ) : (
+        <div id="onboard">
+          <h1>Welcome to Synced 🌟</h1>
+          <p>
+            "🎉 Welcome aboard Synced! Start your journey by inviting friends
+            and family to join the conversation. Connect, share, and manage your
+            network with ease. Let's get chatting! 💬🚀"
+          </p>
+        </div>
+      )}
       {/* {chatId ? <Chat currentUser={currentUser}/> : <div width50% height 100%>Begin Chatting</div>} */}
     </div>
   );
-}
-  
+};
+
 export default CurrentUser;
