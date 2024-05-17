@@ -157,9 +157,10 @@ function App() {
             <div id="pwithimg">
               <div id="blur-circle"></div>
               <p>
-                Connect and collaborate effortlessly with Synced Messaging.
-                Create public or private groups, chat in real-time, and stay
-                synchronized with your teams, friends, and communities. 🚀
+                Synced: Elevate Your Interaction Game! 💫 Seamlessly chat,
+                share, and connect on our innovative platform. Join the movement
+                towards effortless networking. Let's spark conversations and
+                forge bonds! 💬✨
               </p>
               <img src={heroimg} alt="hero image" id="hero-image" />
             </div>
