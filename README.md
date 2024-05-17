@@ -5,7 +5,7 @@
 <h1 align="center">Synced</h1>
 
 <p align="center">
-  <a href="https://lets-synced.vercel.app">🌐 Live Demo</a> | <a href="https://www.mediafire.com/file/kdc25oyimikp3jd/Synced.apk/file">📲 Download APK</a>
+  <a href="https://lets-synced.vercel.app">Live Demo 🌐</a> | <a href="https://www.mediafire.com/file/kdc25oyimikp3jd/Synced.apk/file">Download APK 📲</a>
 </p>
 
 ## 📋 Table of Contents
