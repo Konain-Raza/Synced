@@ -44,7 +44,7 @@ function App() {
     try {
       const response = await signInWithPopup(auth, provider);
       const user = response.user;
-console.log(user)
+      console.log(user);
       cookies.set("auth-token", response._tokenResponse.refreshToken);
 
       // Check if the user already exists in Firestore
@@ -155,8 +155,8 @@ console.log(user)
             <h1>Synced</h1>
             <h5>Your Hub for Group Messaging 💬</h5>
             <div id="pwithimg">
+              <div id="blur-circle"></div>
               <p>
-                <div id="blur-circle"></div>
                 Connect and collaborate effortlessly with Synced Messaging.
                 Create public or private groups, chat in real-time, and stay
                 synchronized with your teams, friends, and communities. 🚀
