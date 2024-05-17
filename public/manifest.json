@@ -10,10 +10,6 @@
   "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "windows11/SmallTile.scale-100.png",
-      "purpose": "any maskable"
-    },
-    {
       "src": "windows11/SmallTile.scale-125.png",
       "sizes": "89x89"
     },
@@ -331,8 +327,8 @@
     },
     {
       "src": "android/android-launchericon-512-512.png",
-      "sizes": "512x512",
-      "purpose": "any maskable"
+      "sizes": "512x512"
+     
     },
     {
       "src": "android/android-launchericon-192-192.png",
@@ -426,10 +422,7 @@
       "src": "ios/128.png",
       "sizes": "128x128"
     },
-    {
-      "src": "ios/144.png",
-      "sizes": "144x144"
-    },
+
     {
       "src": "ios/152.png",
       "sizes": "152x152"
