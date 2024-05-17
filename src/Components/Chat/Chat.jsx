@@ -86,10 +86,7 @@ const Chat = () => {
     setNewMessage("");
     
     e.preventDefault();
-    if (file.type !== "image/jpeg" && file.type !== "image/png") {
-      toast.error("Unsupported file type. Please upload a JPG or PNG image.");
-      return;
-    }
+
     if (!chatId || (!newmessage && !image.url)) {
       return; // Exit if chatId is undefined or null, and both newmessage and image are empty
     }
