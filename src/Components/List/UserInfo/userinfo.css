@@ -1,7 +1,7 @@
 #userinfo{
     background-color: #105ef3;
     width: 100%;
-    height: max-content;
+    height: 15%;
     
     display: flex;
     justify-content: space-between;
@@ -61,6 +61,7 @@ font-weight: 1000;
     
 }
 @media only screen and (max-width: 768px) {
+
     #name>h2{
         font-size: clamp(1.875rem, 1.85rem + 0.2vw, 2rem);
         /* font-size: clamp(1rem, 0.9773rem + 0.3636vw, 1.25rem); */

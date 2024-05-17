@@ -1,19 +1,19 @@
 {
-  "background_color": "#ffffff", 
+  "background_color": "#ffffff",
   "dir": "ltr",
   "display": "standalone",
-  "name": "Synced", 
+  "name": "Synced",
   "orientation": "any",
   "scope": "/",
   "short_name": "Synced",
   "start_url": "/",
-  "theme_color": "#ffffff", 
+  "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "Icons/icon.png",
+      "src": "Icons/maskable-icon.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     }
   ],
   "description": "Chatting",
