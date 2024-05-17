@@ -15,48 +15,56 @@ import {
 import { arrayUnion } from "firebase/firestore";
 import useUserStore from "../libraries/userStore";
 
-const AddUser = () => {
-  const { currentUser } = useUserStore();
 
+  const { currentUser } = useUserStore();
   const [users, setUsers] = useState([]);
 
   const handleAddUser = async () => {
-    if (!users.length) return; // Ensure users is not empty
-    const chatRef = collection(db, "chats");
-    const UserchatsRef = collection(db, "userchats");
-    try {
-      const newChatRef = doc(chatRef);
-      await setDoc(newChatRef, {
-        createdAt: serverTimestamp(),
-        messages: [],
-      });
+  if (!users.length) return; // Ensure users is not empty
+
+  const chatRef = collection(db, "chats");
+  const userChatsRef = collection(db, "userchats");
+
+  try {
+    // Assume the first user in the list is the one to be added (you can change this logic as needed)
+    const newUser = users[0];
+    
+    // Create a new chat document
+    const newChatRef = doc(chatRef);
+    await setDoc(newChatRef, {
+      createdAt: serverTimestamp(),
+      messages: [],
+    });
+
+    // Construct the chat object
+    const chatObject = {
+      chatId: newChatRef.id,
+      lastMessage: "",
+      receiverId: newUser.id,
+      updatedAt: Date.now(),
+    };
+
+    // Add chat object to current user's userchats collection
+    await setDoc(doc(userChatsRef, currentUser.id, newUser.id), chatObject);
+
+    // Add chat object to the added user's userchats collection
+    await setDoc(doc(userChatsRef, newUser.id, currentUser.id), {
+      chatId: newChatRef.id,
+      lastMessage: "",
+      receiverId: currentUser.id,
+      updatedAt: Date.now(),
+    });
+
+    console.log("Chat successfully created and users added to each other's chat lists");
+  } catch (error) {
+    console.error("Error adding user: ", error);
+  }
+};
+
+ 
+
   
-      // Construct the chat object
-      const chatObject = {
-        chatId: newChatRef.id,
-        lastmessage: "",
-        recieverId: currentUser.id,
-        updatedAt: Date.now(),
-      };
-  
-      // Update userchats for the user being added
-      await updateDoc(doc(UserchatsRef, users[0].id), {
-        chats: arrayUnion(chatObject),
-      });
-  
-      // Update userchats for the current user
-      await updateDoc(doc(UserchatsRef, currentUser.id), {
-        chats: arrayUnion({ 
-          ...chatObject,
-          recieverId: users[0].id, // Switch the sender and receiver
-        }),
-      });
-  
-      console.log(newChatRef.id);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   
 
   const handleSearchuser = async (e) => {
