@@ -9,7 +9,8 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
-import toast from "react-hot-toast";
+import { ToastContainer, toast } from "react-toastify";
+
 import { db } from "../firebase-config";
 import upload from "../libraries/Upload";
 import useUserStore from "/src/Components/libraries/userStore.js";
@@ -17,7 +18,6 @@ import { useChatStore } from "../libraries/chatStore";
 import avatar from "../List/UserInfo/Images/avatar.png";
 
 const Chat = () => {
-  const { mobileViewChat, setMobileViewChat } = useState(false);
   const { currentUser } = useUserStore();
   const [open, setOpen] = useState(false);
   const [chats, setChats] = useState("");
@@ -38,11 +38,12 @@ const Chat = () => {
         file: file,
         url: imageURL,
       });
-      // setNewMessage(""); // Clear the message input
-      handleSendMessage(); // Trigger handleSendMessage after image upload
+     
+ 
     } catch (error) {
       toast.error("Error handling image:", error);
     }
+    
   };
 
   const { chatId, user, isCurrentUserBlocked, changeBlock, isRecieverBlocked } =
@@ -83,12 +84,17 @@ const Chat = () => {
 
   const handleSendMessage = async (e) => {
     setNewMessage("");
+    
     e.preventDefault();
+    if (file.type !== "image/jpeg" && file.type !== "image/png") {
+      toast.error("Unsupported file type. Please upload a JPG or PNG image.");
+      return;
+    }
     if (!chatId || (!newmessage && !image.url)) {
       return; // Exit if chatId is undefined or null, and both newmessage and image are empty
     }
     let ImageUrl = null;
-
+    setNewMessage("");
     try {
       if (image.file) {
         ImageUrl = await upload(image.file);
@@ -173,7 +179,7 @@ const Chat = () => {
                 }
               >
                 <img src={avatar} alt="" />
-                {message.image && <img src={message.image} alt="chat-img" />}
+                {message.image && <img src={message.image} alt="chat-img" id="chat-img"/>}
               </div>
 
               <div
@@ -237,6 +243,18 @@ const Chat = () => {
           <i className="ri-send-plane-2-line"></i>
         </button>
       </form>
+      <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />  
     </div>
   );
 };

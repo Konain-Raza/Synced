@@ -222,10 +222,10 @@ flex-direction: column;
 }
 
 #chat-img{
-    background-color: blue;
-    width: 100%;
-    height: 200px;
+   max-width: 70%;
+    height: 70%;
     object-fit: cover;
+    background-color: transparent;
 }
 
 #block-btn{

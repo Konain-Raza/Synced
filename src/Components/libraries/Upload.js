@@ -1,6 +1,10 @@
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const upload = async (file) => {
+  if (file.type !== "image/jpeg" && file.type !== "image/png") {
+    console.error("Unsupported file type. Please upload a JPG or PNG image.");
+    return;
+  }
   const storage = getStorage();
   const date = new Date();
   const storageRef = ref(storage, `Images/${date + file.name}`);
