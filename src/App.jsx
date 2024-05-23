@@ -144,6 +144,17 @@ function App() {
       }
     }
   };
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuth(true);
+        setUserData(user.uid);
+      } else {
+        setIsAuth(false);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   if (isAuth) {
     return <CurrentUserPage authUser={userdata} />;
