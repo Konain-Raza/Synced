@@ -3,18 +3,14 @@ import "./userinfo.css";
 import avatar from "./Images/avatar.png";
 import Settings from "../../Settings/Settings";
 import Cookies from "universal-cookie";
+import { signOut } from "firebase/auth"; // Import the signOut function
 
 const UserInfo = ({ currentUser }) => {
-  const [logout, setlogout] = useState(false);
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [chatUser, setChatUser] = useState(currentUser); // Initialize chatUser state with currentUser
   const cookies = new Cookies();
 
   // Function to toggle settings visibility
-  const handleLogout = () => {
-    cookies.remove("auth-token");
-    window.location.reload();
-  };
   const toggleSettings = () => {
     setSettingsVisible((prev) => !prev);
   };
@@ -24,15 +20,22 @@ const UserInfo = ({ currentUser }) => {
     setChatUser(newUserData);
   };
 
-  if (!currentUser) {
-    return <div>Loading...</div>; // or handle the error appropriately
-  }
+  // Function to handle user sign-out
+  const handleLogout = async () => {
+    try {
+      await signOut(auth); // Assuming `auth` is your Firebase authentication instance
+      cookies.remove("auth-token");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   return (
     <div id="userinfo">
       <div className="user">
         <div id="name">
           <img src={chatUser.avatar || avatar} alt="user-image" />
-
           <h2>{chatUser.username}</h2>
         </div>
         <div id="icons-box">
