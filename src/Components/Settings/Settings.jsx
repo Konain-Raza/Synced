@@ -56,7 +56,8 @@ const Settings = ({ currentUser, onUpdate }) => {
       
 
     } catch (error) {
-      toast.error("Error updating user data:", error);
+      toast.error(`Error updating user data: ${error}`);
+
     }
   };
 

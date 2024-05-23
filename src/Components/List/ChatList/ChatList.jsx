@@ -50,7 +50,6 @@ const ChatList = () => {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        if (!currentUser) return; // Exit if currentUser is null
         if (currentUser) {
           const docRef = doc(db, "userchats", currentUser.id);
           const docSnap = await getDoc(docRef);
@@ -125,32 +124,8 @@ const ChatList = () => {
     };
   }, [currentUser]);
 
-  // Inside your component:
-
-  // Create a ref to store the previous filterChats
   const previousFilterChatsRef = useRef([]);
 
-  // Use the ref to compare the previous filterChats with the current filterChats
-  // useEffect(() => {
-  //   // Compare the current filterChats with the previousFilterChats
-  //   const newMessages = filterChats.filter(
-  //     (chat) =>
-  //       !previousFilterChatsRef.current.some(
-  //         (prevChat) =>
-  //           prevChat.chatId === chat.chatId && prevChat.isSeen === chat.isSeen
-  //       )
-  //   );
-
-  //   // If there are new unseen messages, play the notification sound
-  //   if (newMessages.length > 0) {
-  //     toast.success(`New message from ${newMessages[0].user.username}`);
-  //     const sound = new Audio(notificationAudio);
-  //     sound.play();
-  //   }
-
-  //   // Update the previousFilterChatsRef with the current filterChats
-  //   previousFilterChatsRef.current = filterChats;
-  // }, [filterChats, notificationAudio]);
   useEffect(() => {
     const newMessages = filterChats.filter(
       (chat) =>
@@ -160,7 +135,10 @@ const ChatList = () => {
         )
     );
 
-    if (newMessages.length > 0) {
+    if (
+      newMessages.length > 0 &&
+      newMessages.some((chat) => chat.user.id !== currentUser.id)
+    ) {
       toast.success(`New message from ${newMessages[0].user.username}`);
       const sound = new Audio(notificationSound);
       sound.play();

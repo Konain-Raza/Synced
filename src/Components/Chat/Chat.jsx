@@ -20,7 +20,7 @@ import avatar from "../List/UserInfo/Images/avatar.png";
 const Chat = () => {
   const { currentUser } = useUserStore();
   const [open, setOpen] = useState(false);
-  const [chats, setChats] = useState("");
+  const [chats, setChats] = useState([]);
   const [blockedStatus, setBlockedStatus] = useState(false);
   const [newmessage, setNewMessage] = useState("");
   const [image, setImage] = useState({
