@@ -4,6 +4,8 @@
     width: 30%;
     height: 100%;
 }
+
+
 @media only screen and (max-width: 768px) {
     #list{
         width: 100%;
