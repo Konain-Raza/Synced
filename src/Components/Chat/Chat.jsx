@@ -20,93 +20,31 @@ import avatar from "../List/UserInfo/Images/avatar.png";
 const Chat = () => {
   const { currentUser } = useUserStore();
   const [open, setOpen] = useState(false);
-  const [chats, setChats] = useState([]);
+  const [chats, setChats] = useState("");
   const [blockedStatus, setBlockedStatus] = useState(false);
   const [newmessage, setNewMessage] = useState("");
   const [image, setImage] = useState({
     file: null,
-    url: "", // Set initial URL if available
+    url: currentUser.avatar || "", // Set initial URL if available
   });
 
   const handleimage = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-  
+
     try {
       const imageURL = await upload(file);
       setImage({
         file: file,
         url: imageURL,
       });
-  
-      if (chatId) {
-        await handleSendMessage(null, "", imageURL); // Call handleSendMessage with the image URL
-      } else {
-        toast.warn("chatId is not defined. Cannot send message.");
-      }
+     
+ 
     } catch (error) {
       toast.error("Error handling image:", error);
     }
+    
   };
-  
-  
-  const handleSendMessage = async (e, messageText = newmessage, imageUrl) => {
-    if (e) e.preventDefault();
-  
-    if (!chatId || (!messageText && !imageUrl)) {
-      toast.warn("Both newmessage and image are empty.");
-      return;
-    }
-  
-    try {
-      const messageData = {
-        senderId: currentUser.id,
-        text: messageText,
-        createdAt: new Date(),
-      };
-  
-      if (imageUrl) {
-        messageData.image = imageUrl;
-      }
-  
-      await updateDoc(doc(db, "chats", chatId), {
-        messages: arrayUnion(messageData),
-      });
-  
-      const userIDs = [currentUser.id, user.id];
-      for (const id of userIDs) {
-        const userChatRef = doc(db, "userchats", id);
-        const userChatsSnapshot = await getDoc(userChatRef);
-        if (userChatsSnapshot.exists()) {
-          const userChatsData = userChatsSnapshot.data();
-          if (userChatsData && userChatsData.chats) {
-            const chatIndex = userChatsData.chats.findIndex(
-              (c) => c.chatId === chatId
-            );
-            if (chatIndex !== -1) {
-              userChatsData.chats[chatIndex].lastMessage = messageText;
-              userChatsData.chats[chatIndex].isSeen = id === currentUser.id;
-              userChatsData.chats[chatIndex].updatedAt = Date.now();
-              await updateDoc(userChatRef, {
-                chats: userChatsData.chats,
-              });
-            }
-          }
-        }
-      }
-    } catch (error) {
-      toast.error("Error sending message:", error);
-      toast.error("Error sending message");
-    }
-  
-    setImage({
-      file: null,
-      url: "",
-    });
-    setNewMessage("");
-  };
-  
-
 
   const { chatId, user, isCurrentUserBlocked, changeBlock, isRecieverBlocked } =
     useChatStore();
@@ -138,36 +76,65 @@ const Chat = () => {
         blocked: isRecieverBlocked ? arrayRemove(user.id) : arrayUnion(user.id),
       });
       changeBlock();
-      setBlockedStatus(!blockedStatus);
       setBlockedStatus(!isRecieverBlocked);
     } catch (error) {
-      toast.error(error);
+      toast.log(error);
     }
   };
-  useEffect(() => {
-    const fetchBlockStatus = async () => {
-      if (user && currentUser) {
-        const userDocRef = doc(db, "users", currentUser.id);
-        const userDocSnap = await getDoc(userDocRef);
-        if (userDocSnap.exists()) {
-          const userData = userDocSnap.data();
-          setBlockedStatus(userData.blocked?.includes(user.id) || false);
+
+  const handleSendMessage = async (e) => {
+    setNewMessage("");
+    
+    e.preventDefault();
+
+    if (!chatId || (!newmessage && !image.url)) {
+      return; // Exit if chatId is undefined or null, and both newmessage and image are empty
+    }
+    let ImageUrl = null;
+    setNewMessage("");
+    try {
+      if (image.file) {
+        ImageUrl = await upload(image.file);
+      }
+      await updateDoc(doc(db, "chats", chatId), {
+        messages: arrayUnion({
+          senderId: currentUser.id,
+          text: newmessage,
+          createdAt: new Date(),
+          ...(ImageUrl && { image: ImageUrl }), // Corrected 'Ima' to 'ImageUrl'
+        }),
+      });
+
+      const userIDs = [currentUser.id, user.id];
+      for (const id of userIDs) {
+        const userChatRef = doc(db, "userchats", id);
+        const userChatsSnapshot = await getDoc(userChatRef);
+        if (userChatsSnapshot.exists()) {
+          const userChatsData = userChatsSnapshot.data();
+          if (userChatsData && userChatsData.chats) {
+            const chatIndex = userChatsData.chats.findIndex(
+              (c) => c.chatId === chatId
+            );
+            if (chatIndex !== -1) {
+              userChatsData.chats[chatIndex].lastMessage = newmessage;
+              userChatsData.chats[chatIndex].isSeen = id === currentUser.id;
+              userChatsData.chats[chatIndex].updatedAt = Date.now();
+              await updateDoc(userChatRef, {
+                chats: userChatsData.chats,
+              });
+            }
+          }
         }
       }
-    };
-
-    fetchBlockStatus();
-
-    const unSub = onSnapshot(doc(db, "chats", chatId), (res) => {
-      setChats(res.data());
+    } catch (error) {
+      toast.log(error);
+    }
+    setImage({
+      file: null,
+      url: "",
     });
-
-    return () => {
-      unSub();
-    };
-  }, [chatId, currentUser, user]);
-
-  
+    setNewMessage("");
+  };
 
   return (
     <div id="chat">
@@ -255,8 +222,7 @@ const Chat = () => {
           />
 
           <div id="emoji">
-            <i 
-            disabled={isCurrentUserBlocked || isRecieverBlocked}
+            <i
               className="ri-user-smile-line"
               onClick={() => setOpen((prev) => !prev)}
             ></i>
