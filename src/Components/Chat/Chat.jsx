@@ -38,12 +38,15 @@ const Chat = () => {
         file: file,
         url: imageURL,
       });
-     
- 
+
+      if (chatId) {
+        await handleSendMessage(null, "", imageURL); // Call handleSendMessage with the image URL
+      } else {
+        toast.warn("chatId is not defined. Cannot send message.");
+      }
     } catch (error) {
       toast.error("Error handling image:", error);
     }
-    
   };
 
   const { chatId, user, isCurrentUserBlocked, changeBlock, isRecieverBlocked } =
@@ -82,27 +85,27 @@ const Chat = () => {
     }
   };
 
-  const handleSendMessage = async (e) => {
-    setNewMessage("");
-    
-    e.preventDefault();
+  const handleSendMessage = async (e, messageText = newmessage, imageUrl) => {
+    if (e) e.preventDefault();
 
-    if (!chatId || (!newmessage && !image.url)) {
-      return; // Exit if chatId is undefined or null, and both newmessage and image are empty
+    if (!chatId || (!messageText && !imageUrl)) {
+      toast.warn("Both newmessage and image are empty.");
+      return;
     }
-    let ImageUrl = null;
-    setNewMessage("");
+
     try {
-      if (image.file) {
-        ImageUrl = await upload(image.file);
+      const messageData = {
+        senderId: currentUser.id,
+        text: messageText,
+        createdAt: new Date(),
+      };
+
+      if (imageUrl) {
+        messageData.image = imageUrl;
       }
+
       await updateDoc(doc(db, "chats", chatId), {
-        messages: arrayUnion({
-          senderId: currentUser.id,
-          text: newmessage,
-          createdAt: new Date(),
-          ...(ImageUrl && { image: ImageUrl }), // Corrected 'Ima' to 'ImageUrl'
-        }),
+        messages: arrayUnion(messageData),
       });
 
       const userIDs = [currentUser.id, user.id];
@@ -116,7 +119,7 @@ const Chat = () => {
               (c) => c.chatId === chatId
             );
             if (chatIndex !== -1) {
-              userChatsData.chats[chatIndex].lastMessage = newmessage;
+              userChatsData.chats[chatIndex].lastMessage = messageText;
               userChatsData.chats[chatIndex].isSeen = id === currentUser.id;
               userChatsData.chats[chatIndex].updatedAt = Date.now();
               await updateDoc(userChatRef, {
@@ -127,8 +130,10 @@ const Chat = () => {
         }
       }
     } catch (error) {
-      toast.log(error);
+      toast.error("Error sending message:", error);
+      toast.error("Error sending message");
     }
+
     setImage({
       file: null,
       url: "",
@@ -176,7 +181,9 @@ const Chat = () => {
                 }
               >
                 <img src={avatar} alt="" />
-                {message.image && <img src={message.image} alt="chat-img" id="chat-img"/>}
+                {message.image && (
+                  <img src={message.image} alt="chat-img" id="chat-img" />
+                )}
               </div>
 
               <div
@@ -241,17 +248,17 @@ const Chat = () => {
         </button>
       </form>
       <ToastContainer
-          position="top-center"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={true}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />  
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };
