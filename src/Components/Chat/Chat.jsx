@@ -50,7 +50,7 @@ const Chat = () => {
   };
   
   
-  const handleSendMessage = async (e, messageText = newmessage, imageUrl = image.url) => {
+  const handleSendMessage = async (e, messageText = newmessage, imageUrl) => {
     if (e) e.preventDefault();
   
     if (!chatId || (!messageText && !imageUrl)) {
@@ -59,13 +59,18 @@ const Chat = () => {
     }
   
     try {
+      const messageData = {
+        senderId: currentUser.id,
+        text: messageText,
+        createdAt: new Date(),
+      };
+  
+      if (imageUrl) {
+        messageData.image = imageUrl;
+      }
+  
       await updateDoc(doc(db, "chats", chatId), {
-        messages: arrayUnion({
-          senderId: currentUser.id,
-          text: messageText,
-          createdAt: new Date(),
-          ...(imageUrl && { image: imageUrl }),
-        }),
+        messages: arrayUnion(messageData),
       });
   
       const userIDs = [currentUser.id, user.id];
@@ -100,6 +105,7 @@ const Chat = () => {
     });
     setNewMessage("");
   };
+  
   
   // const handleimage = async (e) => {
   //   const file = e.target.files[0];
