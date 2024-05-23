@@ -264,6 +264,12 @@ flex-direction: column;
         height: 63%;
         background-color: #F5F6F1 !important;
     }
+    #info-1>img{
+        border-radius: 50%;
+        width: 55px;
+        height: 55px;
+        object-fit: cover;
+    }
     #current-chatuserinfo{
         padding: 2vh 0.7vw;
         align-items: center;

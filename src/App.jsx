@@ -151,6 +151,7 @@ function App() {
         setuserdata(user.uid);
       } else {
         setIsAuth(false);
+        
       }
     });
     return () => unsubscribe();
