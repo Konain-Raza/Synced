@@ -29,6 +29,7 @@ const Settings = ({ currentUser, onUpdate }) => {
     let imageUrl; // Declare imageUrl variable here
 
     try {
+      
       const userDocRef = doc(db, "users", currentUser.id);
       const userDocSnap = await getDoc(userDocRef);
 

@@ -12,7 +12,6 @@ const CurrentUser = (props) => {
   const { chatId } = useChatStore();
   const { currentUser, fetchUserInfo } = useUserStore();
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, async (user) => {
@@ -20,9 +19,7 @@ const CurrentUser = (props) => {
         await fetchUserInfo(user.uid);
         setIsLoading(false); // Set loading to false after user data is fetched
       }
-      else {
-        setIsAuthenticated(false); // Set authentication to false if user is not found
-      }
+ 
     });
 
     return () => {
@@ -30,9 +27,6 @@ const CurrentUser = (props) => {
     };
   }, [fetchUserInfo]);
 
-  if (!isAuthenticated) {
-    return <App />;
-  }
   // Render loading indicator if data is still loading
   if (isLoading) {
     return <div className="loader"></div>;

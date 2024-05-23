@@ -13,8 +13,7 @@ const ChatList = () => {
   const [chats, setChats] = useState([]);
   const [modifyuser, setModifyUser] = useState(false);
   const { currentUser } = useUserStore();
-  const { changeChat, isCurrentUserBlocked, isRecieverBlocked } =
-    useChatStore(); // Destructure changeChat, isCurrentUserBlocked, isRecieverBlocked from useChatStore
+  const { changeChat, isCurrentUserBlocked, isRecieverBlocked } = useChatStore(); // Destructure changeChat, isCurrentUserBlocked, isRecieverBlocked from useChatStore
   const [input, setInput] = useState("");
   const notificationAudio = new Audio(notificationSound);
 
@@ -195,18 +194,7 @@ const ChatList = () => {
             </div>
           ))}
 
-        <ToastContainer
-          position="top-center"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={true}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
+  
       </div>
 
       {modifyuser && <AddUser />}

@@ -46,7 +46,6 @@ const Chat = () => {
       }
     } catch (error) {
       toast.error("Error handling image:", error);
-      toast.error("Error handling image");
     }
   };
   
