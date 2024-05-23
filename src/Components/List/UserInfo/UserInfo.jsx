@@ -4,6 +4,7 @@ import avatar from "./Images/avatar.png";
 import Settings from "../../Settings/Settings";
 import Cookies from "universal-cookie";
 import { signOut } from "firebase/auth"; // Import the signOut function
+import { auth } from "../../firebase-config";
 
 const UserInfo = ({ currentUser }) => {
   const [settingsVisible, setSettingsVisible] = useState(false);

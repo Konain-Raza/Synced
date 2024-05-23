@@ -85,7 +85,9 @@ margin: auto;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap:0.5vw
+    gap:0.5vw;
+overflow: hidden;
+
 }
 
 .chat-users>img{
@@ -201,7 +203,6 @@ align-items: center;
     }
     .chat-users{
     box-shadow: none;
-
         padding: 1px;
         border-radius: 50%;
         object-fit: contain;

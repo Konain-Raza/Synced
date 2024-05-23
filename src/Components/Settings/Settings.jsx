@@ -6,7 +6,6 @@ import { getStorage, ref, uploadBytesResumable } from "firebase/storage"; // Upd
 import upload from "../libraries/Upload";
 import { ToastContainer, toast } from "react-toastify";
 
-
 const Settings = ({ currentUser, onUpdate }) => {
   const [avatar, setAvatar] = useState({
     file: null,
@@ -50,26 +49,26 @@ const Settings = ({ currentUser, onUpdate }) => {
         });
       }
 
-      toast.success( `${currentUser.username} you data updated successfully!`);
+      toast.success(`${currentUser.username} you data updated successfully!`);
       onUpdate({ ...currentUser, username: newname, avatar: imageUrl });
-      
-      
-
     } catch (error) {
       toast.error(`Error updating user data: ${error}`);
-
     }
   };
 
   return (
     <form id="settingsBox" onSubmit={handleSubmitSetting}>
-      <input type="text" placeholder="New Name" name="newname" required/>
+      <input type="text" placeholder="New Name" name="newname" required />
       <input type="text" placeholder="Status" name="newstatus" required />
       <label htmlFor="file" id="file-set">
-        <img src={avatar.url} alt="" /> {/* Display the selected image */}
+        <img
+          src={avatar.url}
+          alt=""
+          style={{ width: "50px", height: "50px" }}
+        />
         Upload an Image
       </label>
-      <input 
+      <input
         type="file"
         id="file"
         name="image-url"
@@ -78,17 +77,17 @@ const Settings = ({ currentUser, onUpdate }) => {
       />
       <button type="submit">Confirm</button>
       <ToastContainer
-              position="top-center"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light"
-            />
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </form>
   );
 };

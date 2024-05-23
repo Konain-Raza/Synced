@@ -148,7 +148,7 @@ function App() {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsAuth(true);
-        setUserData(user.uid);
+        setuserdata(user.uid);
       } else {
         setIsAuth(false);
       }

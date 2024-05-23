@@ -136,7 +136,7 @@ gap: 5vw;
   justify-content: center;
   padding-left: 2%;
   max-height: max-content;
-  height: 100%;
+  height: max-content;
   width: 60%;
 }
 #pwithimg{
@@ -212,6 +212,7 @@ padding-bottom: 15px;
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (min-width: 100px ) {
   .container{
+    
 margin-bottom: 15vh;
   }
   *{
@@ -245,6 +246,7 @@ margin-bottom: 15vh;
   width: 100%;
 }
   #hero{
+    
     width: 100%;
     flex-direction: column;
     /* background-color: #4461F2; */
@@ -374,7 +376,10 @@ margin-bottom: 15vh;
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-
+  .container{
+    
+    margin-bottom: 0vh;
+      }
   #blur-circle{
     opacity: 0.27;
     left: 25%;
@@ -413,12 +418,15 @@ margin-bottom: 15vh;
 @media only screen and (min-width: 768px) {
 
   #hero{
-    background-color: red;
+    display: flex;
+    overflow: hidden;
     flex-direction: row;
     padding: 50px;
     align-items: center;
   }
+ 
 #hero-content{
+  
   margin-top: 10vh;
 }
   #pwithimg{

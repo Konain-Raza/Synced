@@ -75,44 +75,7 @@ const AddUser = () => {
   };
   
   
-  // const handleAddUser = async () => {
-  //   if (!users.length) return; // Ensure users is not empty
-  //   const chatRef = collection(db, "chats");
-  //   const UserchatsRef = collection(db, "userchats");
-  //   try {
-  //     const newChatRef = doc(chatRef);
-  //     await setDoc(newChatRef, {
-  //       createdAt: serverTimestamp(),
-  //       messages: [],
-  //     });
-  
-  //     // Construct the chat object
-  //     const chatObject = {
-  //       chatId: newChatRef.id,
-  //       lastmessage: "",
-  //       recieverId: currentUser.id,
-  //       updatedAt: Date.now(),
-  //     };
-  
-  //     // Update userchats for the user being added
-  //     await updateDoc(doc(UserchatsRef, users[0].id), {
-  //       chats: arrayUnion(chatObject),
-  //     });
-  
-  //     // Update userchats for the current user
-  //     await updateDoc(doc(UserchatsRef, currentUser.id), {
-  //       chats: arrayUnion({ 
-  //         ...chatObject,
-  //         recieverId: users[0].id, // Switch the sender and receiver
-  //       }),
-  //     });
-  
-  //     console.log(newChatRef.id);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  
+
 
   const handleSearchuser = async (e) => {
     
@@ -152,7 +115,18 @@ const AddUser = () => {
           ))}
         </div>
       )}
-
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
     </div>
   );
 };
