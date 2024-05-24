@@ -7,6 +7,9 @@
 <p align="center">
   <a href="https://lets-synced.vercel.app">Live Demo 🌐</a> | <a href="https://www.mediafire.com/file/kdc25oyimikp3jd/Synced.apk/file">Download APK 📲</a>
 </p>
+  <a href="https://lets-synced.vercel.app">
+    <img src="/src/assets/Images/website-preview.png" alt="Website Preview" width="600">
+  </a>
 
 ## 📋 Table of Contents
 
