@@ -94,6 +94,8 @@ const Chat = () => {
     }
 
     try {
+    setNewMessage("");
+
       const messageData = {
         senderId: currentUser.id,
         text: messageText,
@@ -208,6 +210,8 @@ const Chat = () => {
               <i className="ri-image-line"></i>
             </label>
             <input
+          disabled={isCurrentUserBlocked || isRecieverBlocked}
+
               type="file"
               name="file"
               id="file"
@@ -228,10 +232,11 @@ const Chat = () => {
             disabled={isCurrentUserBlocked || isRecieverBlocked}
           />
 
-          <div id="emoji">
+          <div id="emoji" >
             <i
               className="ri-user-smile-line"
               onClick={() => setOpen((prev) => !prev)}
+              
             ></i>
             <div id="emoji-container">
               {open && <EmojiPicker onEmojiClick={handleEmojis} />}
