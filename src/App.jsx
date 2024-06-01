@@ -165,14 +165,11 @@ function App() {
         <div id="hero">
           <div id="hero-content">
             <h1>Synced</h1>
-            <h5>Your Hub for Group Messaging 💬</h5>
+            <h5>Sprinkling Magic into Every Message! 🧙‍♂</h5>
             <div id="pwithimg">
               <div id="blur-circle"></div>
               <p>
-                Synced: Elevate Your Interaction Game! 💫 Seamlessly chat,
-                share, and connect on our innovative platform. Join the movement
-                towards effortless networking. Let's spark conversations and
-                forge bonds! 💬✨
+              Where Chats Spark Magic! ✨ Dive into a world of enchanting connections with Synced. 🚀 Say goodbye to the mundane and hello to a realm where every message is a spell. 🪄 Let's sync up and make magic happen!
               </p>
               <img src={heroimg} alt="hero image" id="hero-image" />
             </div>
