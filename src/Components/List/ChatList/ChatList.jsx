@@ -18,6 +18,7 @@ const ChatList = () => {
   const notificationAudio = new Audio(notificationSound);
 
   const handleSelectChat = async (chat) => {
+    if (!currentUser) return; // Check if currentUser exists
     // Change the parameter name from 'chats' to 'chat'
     const userChats = chats.map((item) => {
       const { user, ...rest } = item;
@@ -34,7 +35,7 @@ const ChatList = () => {
       });
       changeChat(chat.chatId, chat.user);
     } catch (error) {
-      toast.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -87,40 +88,47 @@ const ChatList = () => {
       }
     };
 
-    fetchChats(); // Fetch initial chat data
-    const unsubscribe = onSnapshot(
-      doc(db, "userchats", currentUser.id),
-      (snapshot) => {
-        if (snapshot.exists()) {
-          const items = snapshot.data().chats;
-          const promises = items.map(async (item) => {
-            if (item.recieverId) {
-              const userDocRef = doc(db, "users", item.recieverId);
-              const userdocSnap = await getDoc(userDocRef);
-              const user = userdocSnap.data();
-              return {
-                ...item,
-                user,
-              };
-            } else {
-              toast.log("recieverId is undefined:", item);
-              return null;
-            }
-          });
+    if (currentUser) {
+      fetchChats(); // Fetch initial chat data
+      const unsubscribe = onSnapshot(
+        doc(db, "userchats", currentUser.id),
+        (snapshot) => {
+          if (snapshot.exists()) {
+            const items = snapshot.data().chats;
+            const promises = items.map(async (item) => {
+              if (item.recieverId) {
+                const userDocRef = doc(db, "users", item.recieverId);
+                const userdocSnap = await getDoc(userDocRef);
+                const user = userdocSnap.data();
+                return {
+                  ...item,
+                  user,
+                };
+              } else {
+                toast.log("recieverId is undefined:", item);
+                return null;
+              }
+            });
 
-          Promise.all(promises).then((chatData) => {
-            const filteredChatData = chatData.filter((item) => item !== null);
-            setChats(filteredChatData.sort((a, b) => b.updateAt - a.updatedAt));
-          });
-        } else {
-          toast.error("Document does not exist for currentUser:", currentUser);
+            Promise.all(promises).then((chatData) => {
+              const filteredChatData = chatData.filter((item) => item !== null);
+              setChats(
+                filteredChatData.sort((a, b) => b.updateAt - a.updatedAt)
+              );
+            });
+          } else {
+            toast.error(
+              "Document does not exist for currentUser:",
+              currentUser
+            );
+          }
         }
-      }
-    );
+      );
 
-    return () => {
-      unsubscribe(); // Unsubscribe from the snapshot listener when the component unmounts
-    };
+      return () => {
+        unsubscribe(); // Unsubscribe from the snapshot listener when the component unmounts
+      };
+    }
   }, [currentUser]);
 
   const previousFilterChatsRef = useRef([]);
@@ -144,14 +152,9 @@ const ChatList = () => {
     }
 
     previousFilterChatsRef.current = filterChats;
-  }, [filterChats]);
+  }, [filterChats, currentUser]);
 
-  if (!currentUser) {
-    return <div>Loading...</div>;
-  }
-  if (!currentUser) {
-    return <div>Loading...</div>; // Render a loading indicator or a placeholder
-  }
+
 
   return (
     <div id="chatlist">
@@ -171,33 +174,35 @@ const ChatList = () => {
         ></i>
       </div>
 
-      <div id="joined-users">
-        {filterChats
-          .sort((a, b) => a.isSeen - b.isSeen)
-          .map((chat) => (
-            <div
-              className="chat-users"
-              key={chat.chatId}
-              onClick={() => handleSelectChat(chat)}
-              style={{
-                backgroundColor: chat.isSeen ? "white" : "#105ef3",
-                color: chat.isSeen ? "black" : "white",
-              }}
-            >
-              <img src={chat.user.avatar || avatar} alt="user-image" />
-              <div id="name-msg">
-                <h1>{chat.user.username}</h1>
-                {(!isCurrentUserBlocked || !isRecieverBlocked) && (
-                  <p>{chat.lastMessage}</p>
-                )}
-              </div>
-            </div>
-          ))}
+      {currentUser ? (
+  <div id="joined-users">
+    {filterChats
+      .sort((a, b) => a.isSeen - b.isSeen)
+      .map((chat) => (
+        <div
+          className="chat-users"
+          key={chat.chatId}
+          onClick={() => handleSelectChat(chat)}
+          style={{
+            backgroundColor: chat.isSeen ? "white" : "#105ef3",
+            color: chat.isSeen ? "black" : "white",
+          }}
+        >
+          <img src={chat.user?.avatar || avatar} alt="user-image" />
+          <div id="name-msg">
+            <h1>{chat.user?.username}</h1>
+            {(!isCurrentUserBlocked || !isRecieverBlocked) && (
+              <p>{chat.lastMessage}</p>
+            )}
+          </div>
+        </div>
+      ))}
+  </div>
+) : null}
 
-  
-      </div>
 
       {modifyuser && <AddUser />}
+      <ToastContainer />
     </div>
   );
 };

@@ -29,7 +29,17 @@ const AddUser = () => {
     const UserchatsRef = collection(db, "userchats");
 
     try {
+      if (!currentUser || !currentUser.id) {
+        toast.error("Current user is not valid");
+        return;
+      }
+
       const currentUserChatsDoc = await getDoc(doc(UserchatsRef, currentUser.id));
+      if (!currentUserChatsDoc.exists()) {
+        toast.error("Current user chats document does not exist");
+        return;
+      }
+
       const currentUserChats = currentUserChatsDoc.data()?.chats || [];
       const userExists = currentUserChats.some(chat => chat.recieverId === user.id);
 

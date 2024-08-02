@@ -44,7 +44,6 @@ function App() {
     try {
       const response = await signInWithPopup(auth, provider);
       const user = response.user;
-      console.log(user);
       cookies.set("auth-token", response._tokenResponse.refreshToken);
 
       // Check if the user already exists in Firestore
