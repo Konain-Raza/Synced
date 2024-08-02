@@ -15,89 +15,83 @@ import {
 } from "firebase/firestore";
 import { arrayUnion } from "firebase/firestore";
 import { ToastContainer, toast } from "react-toastify";
-
+import "react-toastify/dist/ReactToastify.css"; // Import styles for Toastify
 import useUserStore from "../libraries/userStore";
 
 const AddUser = () => {
   const { currentUser } = useUserStore();
-
   const [users, setUsers] = useState([]);
-  const handleAddUser = async () => {
-    if (!users.length) return; // Ensure users is not empty
-  
+
+  const handleAddUser = async (user) => {
+    if (!user) return;
+
     const chatRef = collection(db, "chats");
     const UserchatsRef = collection(db, "userchats");
-  
+
     try {
-      // Get the current user's chats
       const currentUserChatsDoc = await getDoc(doc(UserchatsRef, currentUser.id));
       const currentUserChats = currentUserChatsDoc.data()?.chats || [];
-  
-      // Check if the user is already in the current user's chat list
-      const userExists = currentUserChats.some(chat => chat.recieverId === users[0].id);
-  
+      const userExists = currentUserChats.some(chat => chat.recieverId === user.id);
+
       if (userExists) {
         toast.error("User is already in the chat list");
         return;
       }
-  
+
       const newChatRef = doc(chatRef);
       await setDoc(newChatRef, {
         createdAt: serverTimestamp(),
         messages: [],
       });
-  
-      // Construct the chat object
+
       const chatObject = {
         chatId: newChatRef.id,
-        lastmessage: "",
+        lastMessage: "",
         recieverId: currentUser.id,
         updatedAt: Date.now(),
       };
-  
-      // Update userchats for the user being added
-      await updateDoc(doc(UserchatsRef, users[0].id), {
+
+      await updateDoc(doc(UserchatsRef, user.id), {
         chats: arrayUnion(chatObject),
       });
-  
-      // Update userchats for the current user
+
       await updateDoc(doc(UserchatsRef, currentUser.id), {
-        chats: arrayUnion({ 
+        chats: arrayUnion({
           ...chatObject,
-          recieverId: users[0].id, // Switch the sender and receiver
+          recieverId: user.id,
         }),
       });
-  
-    
+
+      toast.success("User added to chat list");
     } catch (error) {
-      toast.error(error);
+      toast.error("Error adding user: " + error.message);
     }
   };
-  
-  
 
-
-  const handleSearchuser = async (e) => {
-    
+  const handleSearchUser = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const username = formData.get("username");
+
     try {
       const userRef = collection(db, "users");
       const q = query(userRef, where("username", "==", username));
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
-        setUsers(querySnapshot.docs.map(doc => doc.data())); // Update state with array of user data
+        setUsers(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      } else {
+        toast.error("No user found with this username");
+        setUsers([]);
       }
     } catch (error) {
-      toast.error(error);
+      toast.error("Error searching user: " + error.message);
     }
   };
 
   return (
     <div id="addUser">
-      <form onSubmit={handleSearchuser} id="search-add-user">
-        <input type="text" name="username" />
+      <form onSubmit={handleSearchUser} id="search-add-user">
+        <input type="text" name="username" placeholder="Enter username" />
         <button type="submit" id="search">
           Search
         </button>
@@ -106,27 +100,27 @@ const AddUser = () => {
         <div id="all-users">
           {users.map((user) => (
             <div className="userDetail" key={user.id}>
-              <img src={user.avatar || avatar} alt="" />
+              <img src={user.avatar || avatar} alt="user avatar" />
               <span>{user.username}</span>
-              <button id="idUser" onClick={handleAddUser}>
+              <button id="idUser" onClick={() => handleAddUser(user)}>
                 Add user
               </button>
             </div>
           ))}
         </div>
       )}
-        <ToastContainer
-          position="top-center"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={true}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };
